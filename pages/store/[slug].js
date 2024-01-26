@@ -244,7 +244,7 @@ export default function Page() {
             </div>
         </div>
 
-        <div className='flex items-start space-x-3 container mx-auto'>
+        <div className='flex items-start md:space-x-3 container mx-auto'>
             <div className='hidden w-1/4 text-lg md:flex flex-col space-y-5 text-gray-500 sticky top-10'>
                 <h3 className='cursor-pointer'>Featured Items</h3>
                 <h3 className='cursor-pointer'>Breakfast</h3>
@@ -252,20 +252,20 @@ export default function Page() {
                 <h3 className='cursor-pointer'>Salads</h3>
                 <h3 className='cursor-pointer'>Kid's Meals</h3>
             </div>
-            <div className='flex-1 flex-col space-y-16'>
+            <div className='w-full md:w-3/4 flex-col space-y-16'>
 
-                <div className='flex flex-col space-y-8'>
+                <div className='flex flex-col space-y-8 px-5 md:px-0'>
 
                     <h3 className='text-2xl'>Featured Items</h3>
 
-                    <div className='flex items-start  grid-flow-row grid-cols-2 gap-5'>
-                        <div onClick={()=>setSelectedFood(1)} className='col-span-6 w-1/4'>
+                    <div className='flex items-center flex-row  gap-5 overflow-x-auto'>
+                        <div onClick={() => setSelectedFood(1)} className='col-span-6 w-1/2 md:w-1/4'>
 
                             <div className='min-h-40 border rounded-lg  flex flex-col items-center overflow-hidden'>
 
                                 <div className='h-40 flex bg-gray-100 w-40 relative overflow-hidden'>
                                     <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/85c9bdbd7500311ecf28d8c648c941e6/a19bb09692310dfd41e49a96c424b3a6.jpeg" />
-                                    <button onClick={(e)=>e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                    <button onClick={(e) => e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
                                         <IoAdd size={30} />
                                     </button>
                                 </div>
@@ -277,13 +277,13 @@ export default function Page() {
                             </div>
                         </div>
 
-                        <div onClick={()=>setSelectedFood(1)} className='col-span-6 w-1/4'>
+                        <div onClick={() => setSelectedFood(1)} className='col-span-6 w-1/2 md:w-1/4'>
 
                             <div className='min-h-40 border rounded-lg  flex flex-col items-center overflow-hidden'>
 
                                 <div className='h-40 flex bg-gray-100 w-40 relative overflow-hidden'>
                                     <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/832c4dd1ff6d9232d9fcc97ac4468b0c/a19bb09692310dfd41e49a96c424b3a6.jpeg" />
-                                    <button onClick={(e)=>e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                    <button onClick={(e) => e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
                                         <IoAdd size={30} />
                                     </button>
                                 </div>
@@ -295,13 +295,13 @@ export default function Page() {
                             </div>
                         </div>
 
-                        <div onClick={()=>setSelectedFood(1)} className='col-span-6 w-1/4'>
+                        <div onClick={() => setSelectedFood(1)} className='col-span-6 w-1/2 md:w-1/4'>
 
                             <div className='min-h-40 border rounded-lg  flex flex-col items-center overflow-hidden'>
 
                                 <div className='h-40 flex bg-gray-100 w-40 relative overflow-hidden'>
                                     <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/1091072bb299f23f63aa64884cbaade7/5954bcb006b10dbfd0bc160f6370faf3.jpeg" />
-                                    <button onClick={(e)=>e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                    <button onClick={(e) => e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
                                         <IoAdd size={30} />
                                     </button>
                                 </div>
@@ -313,13 +313,13 @@ export default function Page() {
                             </div>
                         </div>
 
-                        <div onClick={()=>setSelectedFood(1)} className='col-span-6 w-1/4'>
+                        <div onClick={() => setSelectedFood(1)} className='col-span-6 w-1/2 md:w-1/4'>
 
                             <div className='min-h-40 border rounded-lg  flex flex-col items-center overflow-hidden'>
 
                                 <div className='h-40 flex bg-gray-100 w-40 relative overflow-hidden'>
                                     <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/79653b5f2987abe098e60af493c80381/5954bcb006b10dbfd0bc160f6370faf3.jpeg" />
-                                    <button onClick={(e)=>e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                    <button onClick={(e) => e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
                                         <IoAdd size={30} />
                                     </button>
                                 </div>
@@ -334,46 +334,70 @@ export default function Page() {
                     </div>
                 </div>
 
-                <div className='flex flex-col space-y-8'>
+                <div className='flex flex-col space-y-8 px-5 md:px-0'>
 
                     <h3 className='text-2xl'>Breakfast</h3>
 
-                    <div className='flex items-center grid-flow-row grid-cols-2 gap-4'>
-                        <div onClick={()=>setSelectedFood(1)} className='col-span-6' >
+                    <div class="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+                        <div onClick={() => setSelectedFood(1)} className='' >
 
-                            <div className='h-40 border rounded-lg  flex items-center overflow-hidden'>
+                            <div className='md:h-40 border-b md:border md:rounded-lg  flex items-center overflow-hidden'>
                                 <div className='flex-1 h-full p-5 flex flex-col space-y-2 overflow-hidden'>
                                     <h3 className='leading-loose text-sm md:text-lg'>Chick-fil-A Chick-n-Minis™ Meal</h3>
                                     <p className='text-sm font-light'>$13.85</p>
                                     <p className='text-sm font-light text-gray-400 '>Bite-sized pieces of tender all breast meat chicken, seasoned to perfection</p>
                                 </div>
-                                <div className='h-40 bg-gray-100 w-40 flex relative overflow-hidden'>
+                                <div className='h-24 w-24 md:h-40 bg-gray-100 md:w-40 flex relative overflow-hidden'>
                                     <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/85c9bdbd7500311ecf28d8c648c941e6/a19bb09692310dfd41e49a96c424b3a6.jpeg" />
-                                    <button onClick={(e)=>e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                    <button onClick={(e) => e.stopPropagation()} className='hidden bg-white p-2 rounded-full md:flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
                                         <IoAdd size={30} />
+                                    </button>
+                                      <button onClick={(e) => e.stopPropagation()} className='md:hidden bg-white p-2 rounded-full flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                        <IoAdd size={18} />
                                     </button>
                                 </div>
                             </div>
                         </div>
+                        <div onClick={() => setSelectedFood(1)} className='' >
 
-                        <div onClick={()=>setSelectedFood(1)} className='col-span-6' >
-
-                            <div className='h-40 border rounded-lg  flex items-center overflow-hidden'>
+                            <div className='md:h-40  border-b md:border md:rounded-lg   flex items-center overflow-hidden'>
                                 <div className='flex-1 h-full p-5 flex flex-col space-y-2 overflow-hidden'>
                                     <h3 className='leading-loose text-sm md:text-lg'>Chick-fil-A Chick-n-Minis™ Meal</h3>
                                     <p className='text-sm font-light'>$13.85</p>
                                     <p className='text-sm font-light text-gray-400 '>Bite-sized pieces of tender all breast meat chicken, seasoned to perfection</p>
                                 </div>
-                                <div className='h-40 bg-gray-100 w-40 flex relative overflow-hidden'>
+                                <div className='h-24 w-24 md:h-40 bg-gray-100 md:w-40 flex relative overflow-hidden'>
                                     <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/1091072bb299f23f63aa64884cbaade7/5954bcb006b10dbfd0bc160f6370faf3.jpeg" />
-                                    <button onClick={(e)=>e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                    <button onClick={(e) => e.stopPropagation()} className='hidden bg-white p-2 rounded-full md:flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
                                         <IoAdd size={30} />
+                                    </button>
+                                      <button onClick={(e) => e.stopPropagation()} className='md:hidden bg-white p-2 rounded-full flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                        <IoAdd size={18} />
                                     </button>
                                 </div>
                             </div>
                         </div>
+                        <div onClick={() => setSelectedFood(1)} className='' >
 
+                            <div className='md:h-40  border-b md:border md:rounded-lg   flex items-center overflow-hidden'>
+                                <div className='flex-1 h-full p-5 flex flex-col space-y-2 overflow-hidden'>
+                                    <h3 className='leading-loose text-sm md:text-lg'>Chick-fil-A Chick-n-Minis™ Meal</h3>
+                                    <p className='text-sm font-light'>$13.85</p>
+                                    <p className='text-sm font-light text-gray-400 '>Bite-sized pieces of tender all breast meat chicken, seasoned to perfection</p>
+                                </div>
+                                <div className='h-24 w-24 md:h-40 bg-gray-100 md:w-40 flex relative overflow-hidden'>
+                                    <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/1091072bb299f23f63aa64884cbaade7/5954bcb006b10dbfd0bc160f6370faf3.jpeg" />
+                                    <button onClick={(e) => e.stopPropagation()} className='hidden bg-white p-2 rounded-full md:flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                        <IoAdd size={30} />
+                                    </button>
+                                      <button onClick={(e) => e.stopPropagation()} className='md:hidden bg-white p-2 rounded-full flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                        <IoAdd size={18} />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
 
             </div>
@@ -381,7 +405,7 @@ export default function Page() {
 
 
 
-       {selectedFood && <FoodInfo close={()=>setSelectedFood(null) } />}
+        {selectedFood && <FoodInfo close={() => setSelectedFood(null)} />}
 
 
         <Footer />
