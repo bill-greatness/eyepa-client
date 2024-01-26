@@ -21,7 +21,7 @@ export default function Footer() {
                 </div>
 
                 <div className='md:w-1/4 flex flex-col space-y-3'>
-                    <h2 className='font-medium'>Bolt</h2>
+                    <h2 className='font-medium'>Eyepa</h2>
                     <div className='flex flex-col space-y-2 text-gray-400 font-light'>
                         <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Suppliers</a>
                         <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Terms & Conditions</a>
@@ -33,7 +33,7 @@ export default function Footer() {
                     </div>
                 </div>
                 <div className='md:w-1/4 flex flex-col space-y-3'>
-                    <h2 className='font-medium'>Partner with Bolt</h2>
+                    <h2 className='font-medium'>Partner with Eyepa</h2>
 
                     <div className='flex flex-col space-y-2 text-gray-400 font-light'>
                         <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Suppliers</a>

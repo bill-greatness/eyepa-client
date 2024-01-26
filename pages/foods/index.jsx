@@ -222,7 +222,7 @@ export default function Foods() {
     return (
         <div className="min-h-screen flex flex-col">
             <Header />
-<SearchComponent/>
+            <SearchComponent />
 
             <div className="flex-1 flex flex-col space-y-10">
 
@@ -268,7 +268,7 @@ export default function Foods() {
 
                         <div className='flex flex-row items-center space-x-5 overflow-hidden overflow-x-auto'>
 
-                            {feedData.stores.map((store, idx) => <div onClick={() => router.push('/store/'+idx)} key={`store-${index}-${idx}`} className='w-2/3 md:w-1/4 flex flex-col space-y-3 cursor-pointer shrink-0'>
+                            {feedData.stores.map((store, idx) => <div onClick={() => router.push('/store/' + idx)} key={`store-${index}-${idx}`} className='w-2/3 md:w-1/4 flex flex-col space-y-3 cursor-pointer shrink-0'>
                                 <div className="w-full flex bg-gray-300 h-40 rounded-xl relative overflow-hidden">
                                     <img alt={`${store.image}_banner`} className="flex-1 object-cover" src={store.banner} />
 
@@ -304,7 +304,7 @@ export default function Foods() {
                     <div className='flex flex-row items-center  overflow-hidden flex-wrap'>
 
                         {
-                            stores.map((store, index) => <div onClick={() => router.push('/store/'+index)} key={`store-list-${index}`} className='w-full md:w-1/4 flex flex-col cursor-pointer space-y-3 px-1 pb-10'>
+                            stores.map((store, index) => <div onClick={() => router.push('/store/' + index)} key={`store-list-${index}`} className='w-full md:w-1/4 flex flex-col cursor-pointer space-y-3 px-1 pb-10'>
                                 <div className="w-full flex bg-gray-300 h-40 rounded-xl relative overflow-hidden">
                                     <img className="flex-1 object-cover" src={store.banner} />
 

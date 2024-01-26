@@ -165,7 +165,7 @@ export default function Landing() {
                                     <HiChevronDown size={18} />
                                 </button>
                             </div>
-                            <p className='text-base text-gray-500'>Bolt Food has a huge selection of restaurants and stores in your city. Just enter your address or turn on “location services”, and you’ll be able to see which restaurants deliver near you.</p>
+                            <p className='text-base text-gray-500'>Eyepa Food has a huge selection of restaurants and stores in your city. Just enter your address or turn on “location services”, and you’ll be able to see which restaurants deliver near you.</p>
                         </div>
 
                     </div>

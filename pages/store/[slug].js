@@ -7,6 +7,10 @@ import { FaRegHeart } from "react-icons/fa";
 import { MdStar } from "react-icons/md";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { HiArrowLeft, HiArrowRight } from 'react-icons/hi2';
+import Footer from '../../components/Footer'
+import { IoAdd } from 'react-icons/io5';
+import FoodInfo from '../../components/FoodInfo';
+
 
 const banner = "https://images.bolt.eu/store/2022/2022-05-26/f0470c17-449f-4ed2-9461-b554135380ab.jpeg"
 
@@ -49,39 +53,40 @@ const similar = [
 
 ]
 
-
 const comments = [
     {
-        user:"Ella K.",
-        date:"2 years ago",
-        message:"Amazing"
+        user: "Ella K.",
+        date: "2 years ago",
+        message: "Amazing"
     },
     {
-        user:"fahreta M.",
-        date:"2 years ago",
-        message:"Always Delicious"
+        user: "fahreta M.",
+        date: "2 years ago",
+        message: "Always Delicious"
     },
     {
-        user:"Shafali P.",
-        date:"2 years ago",
-        message:"good"
+        user: "Shafali P.",
+        date: "2 years ago",
+        message: "good"
     },
     {
-        user:"Shikira F.",
-        date:"2 years ago",
-        message:"Food was amazing"
+        user: "Shikira F.",
+        date: "2 years ago",
+        message: "Food was amazing"
     },
     {
-        user:"Damaris M.",
-        date:"2 years ago",
-        message:"Good food"
+        user: "Damaris M.",
+        date: "2 years ago",
+        message: "Good food"
     },
     {
-        user:"Yves N.",
-        date:"2 years ago",
-        message:"Food was delivered on time right temperature and was not missing anything extra requestd...."
+        user: "Yves N.",
+        date: "2 years ago",
+        message: "Food was delivered on time right temperature and was not missing anything extra requestd...."
     },
 ]
+
+
 
 
 export default function Page() {
@@ -90,13 +95,18 @@ export default function Page() {
     const [openSimilar, setOpenSimilar] = useState(false)
     const [deliveryMode, setDeliveryMode] = useState(true)
 
-    return <div className="w-screen min-h-screen">
+    const [selectedFood, setSelectedFood] = useState(null)
+
+
+    console.log(router.query.slug)
+
+    return <div className="w-screen h-screen bg-white overflow-hidden overflow-y-auto">
         <Header />
         <SearchComponent />
 
         <div className="h-60 bg-gray-500 flex relative overflow-hidden">
 
-            <img className="flex-1 object-cover" src={banner} />
+            <img alt="store_banner" className="flex-1 object-cover" src={banner} />
 
             <div className="absolute top-0 left-0 right-0 bottom-0 bg-black/20">
 
@@ -114,7 +124,7 @@ export default function Page() {
         </div>
 
         <div className='container mx-auto'>
-            <div className='py-10 flex flex-col space-y-2'>
+            <div className='py-10 flex flex-col space-y-2 px-5 md:px-0'>
                 <h1 className='text-3xl font-medium text-gray-700'>Strictly Angwamo Oil Rice</h1>
                 <div className='flex items-center space-x-2'>
                     <div className='flex items-center font-medium text-sm'>
@@ -123,6 +133,7 @@ export default function Page() {
                     <p className="text-sm text-gray-400 font-light">{"(10+)"}</p>
                     <p className='font-light text-gray-600'> 20–40 min</p>
                 </div>
+                <p className="text-xs text-gray-500 leading-relaxed pt-3 font-light">Chick-fil-A (144 Fulton St) is an excellently rated fast food chain in the Financial District of Manhattan. Known for its affordable prices, the restaurant is most popular in the evening. The top ordered items include the Chick-Fil-a Nuggets Meal, Spicy Chicken Sandwich Deluxe Meal, and Cobb Salad. Customers often order the Chick-Fil-a Nuggets Meal and Chick-Fil-a Sandwich Meal together. • ¢ • Fast Food • American • Breakfast and Brunch • Chicken</p>
                 <div className="flex items-center justify-between py-5">
                     <button onClick={() => setOpenSimilar(prev => !prev)} className='flex items-center transition-all delay-150 space-x-2 justify-center bg-gray-200 px-3 py-2 rounded-full text-sm'>
                         <p>See similar </p>
@@ -140,7 +151,6 @@ export default function Page() {
                 </div>
             </div>
         </div>
-
 
         {
             openSimilar &&
@@ -175,7 +185,7 @@ export default function Page() {
                         </div>
                         <div className='flex flex-row items-start justify-between'>
                             <div className='flex flex-col space-y-1'>
-                                <h3 className='font-medium'>Naya Brookfield Place</h3>
+                                <h3 className='font-medium'>{store.name}</h3>
                                 <p className='font-light text-gray-600'> 20–40 min</p>
                             </div>
                             <div className='h-8 w-8 bg-gray-100 rounded-full items-center justify-center flex text-xs'>
@@ -192,8 +202,8 @@ export default function Page() {
         }
 
 
-        <div>
-            <div className="flex flex-col container mx-auto border-b space-y-5 pb-5 px-5 md:px-0">
+        <div className='py-5 pb-10'>
+            <div className="flex flex-col container mx-auto  space-y-5 pb-5 px-5 md:px-0">
                 <div className='flex items-center justify-between '>
                     <div className='flex flex-col space-y-1'>
                         <h3 className='text-2xl font-medium'>From customers</h3>
@@ -216,24 +226,164 @@ export default function Page() {
                 </div>
 
                 <div className='flex flex-row items-center space-x-5 overflow-hidden overflow-x-auto'>
-                {comments.map((comment,index) => <div key={`comment-${index}`} className='w-2/3 md:w-1/4 flex flex-col space-y-3 cursor-pointer shrink-0 border  rounded-md p-5'>
+                    {comments.map((comment, index) => <div key={`comment-${index}`} className='w-2/3 md:w-1/4 flex flex-col h-32 space-y-3 cursor-pointer shrink-0 border  rounded-md p-5'>
 
-                    <div className="flex items-center space-x-4">
-                        <div className="h-12 w-12 rounded-full bg-gray-100 flex overflow-hidden">
-                            <img className="flex-1 object-cover" alt='user_image' src={'https://d3i4yxtzktqr9n.cloudfront.net/web-eats-v2/d590fac5df89924d.svg'} />
+                        <div className="flex items-center space-x-4">
+                            <div className="h-12 w-12 rounded-full bg-gray-100 flex overflow-hidden">
+                                <img className="flex-1 object-cover" alt='user_image' src={'https://d3i4yxtzktqr9n.cloudfront.net/web-eats-v2/d590fac5df89924d.svg'} />
+                            </div>
+                            <div>
+                                <h3>{comment.user}</h3>
+                                <p className='text-xs font-light text-gray-500'>3 weeks ago</p>
+                            </div>
                         </div>
-                        <div>
-                            <h3>{comment.user}</h3>
-                            <p className='text-xs font-light text-gray-500'>3 weeks ago</p>
-                        </div>
-                    </div>
-                    <p className='text-lg font-light'>{comment.message}</p>
-                </div>)}
+                        <p className='text-base font-light truncate'>{comment.message}</p>
+                    </div>)}
                 </div>
 
             </div>
         </div>
 
-        <p>Post: {router.query.slug}</p>
+        <div className='flex items-start space-x-3 container mx-auto'>
+            <div className='hidden w-1/4 text-lg md:flex flex-col space-y-5 text-gray-500 sticky top-10'>
+                <h3 className='cursor-pointer'>Featured Items</h3>
+                <h3 className='cursor-pointer'>Breakfast</h3>
+                <h3 className='cursor-pointer'>Extras</h3>
+                <h3 className='cursor-pointer'>Salads</h3>
+                <h3 className='cursor-pointer'>Kid's Meals</h3>
+            </div>
+            <div className='flex-1 flex-col space-y-16'>
+
+                <div className='flex flex-col space-y-8'>
+
+                    <h3 className='text-2xl'>Featured Items</h3>
+
+                    <div className='flex items-start  grid-flow-row grid-cols-2 gap-5'>
+                        <div onClick={()=>setSelectedFood(1)} className='col-span-6 w-1/4'>
+
+                            <div className='min-h-40 border rounded-lg  flex flex-col items-center overflow-hidden'>
+
+                                <div className='h-40 flex bg-gray-100 w-40 relative overflow-hidden'>
+                                    <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/85c9bdbd7500311ecf28d8c648c941e6/a19bb09692310dfd41e49a96c424b3a6.jpeg" />
+                                    <button onClick={(e)=>e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                        <IoAdd size={30} />
+                                    </button>
+                                </div>
+
+                            </div>
+                            <div className='py-2 flex flex-col space-y-1'>
+                                <h3 className='text-[15px] fonty-medium'>Chick-fil-A Chick-n-Mini</h3>
+                                <p className='text-sm font-light'>$13.85</p>
+                            </div>
+                        </div>
+
+                        <div onClick={()=>setSelectedFood(1)} className='col-span-6 w-1/4'>
+
+                            <div className='min-h-40 border rounded-lg  flex flex-col items-center overflow-hidden'>
+
+                                <div className='h-40 flex bg-gray-100 w-40 relative overflow-hidden'>
+                                    <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/832c4dd1ff6d9232d9fcc97ac4468b0c/a19bb09692310dfd41e49a96c424b3a6.jpeg" />
+                                    <button onClick={(e)=>e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                        <IoAdd size={30} />
+                                    </button>
+                                </div>
+
+                            </div>
+                            <div className='py-2 flex flex-col space-y-1'>
+                                <h3 className='text-[15px] fonty-medium'>Chick-fil-A Chick-n-Mini</h3>
+                                <p className='text-sm font-light'>$13.85</p>
+                            </div>
+                        </div>
+
+                        <div onClick={()=>setSelectedFood(1)} className='col-span-6 w-1/4'>
+
+                            <div className='min-h-40 border rounded-lg  flex flex-col items-center overflow-hidden'>
+
+                                <div className='h-40 flex bg-gray-100 w-40 relative overflow-hidden'>
+                                    <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/1091072bb299f23f63aa64884cbaade7/5954bcb006b10dbfd0bc160f6370faf3.jpeg" />
+                                    <button onClick={(e)=>e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                        <IoAdd size={30} />
+                                    </button>
+                                </div>
+
+                            </div>
+                            <div className='py-2 flex flex-col space-y-1'>
+                                <h3 className='text-[15px] fonty-medium'>Chick-fil-A Chick-n-Mini</h3>
+                                <p className='text-sm font-light'>$13.85</p>
+                            </div>
+                        </div>
+
+                        <div onClick={()=>setSelectedFood(1)} className='col-span-6 w-1/4'>
+
+                            <div className='min-h-40 border rounded-lg  flex flex-col items-center overflow-hidden'>
+
+                                <div className='h-40 flex bg-gray-100 w-40 relative overflow-hidden'>
+                                    <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/79653b5f2987abe098e60af493c80381/5954bcb006b10dbfd0bc160f6370faf3.jpeg" />
+                                    <button onClick={(e)=>e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                        <IoAdd size={30} />
+                                    </button>
+                                </div>
+
+                            </div>
+                            <div className='py-2 flex flex-col space-y-1'>
+                                <h3 className='text-[15px] fonty-medium'>Chick-fil-A Chick-n-Mini</h3>
+                                <p className='text-sm font-light'>$13.85</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div className='flex flex-col space-y-8'>
+
+                    <h3 className='text-2xl'>Breakfast</h3>
+
+                    <div className='flex items-center grid-flow-row grid-cols-2 gap-4'>
+                        <div onClick={()=>setSelectedFood(1)} className='col-span-6' >
+
+                            <div className='h-40 border rounded-lg  flex items-center overflow-hidden'>
+                                <div className='flex-1 h-full p-5 flex flex-col space-y-2 overflow-hidden'>
+                                    <h3 className='leading-loose text-sm md:text-lg'>Chick-fil-A Chick-n-Minis™ Meal</h3>
+                                    <p className='text-sm font-light'>$13.85</p>
+                                    <p className='text-sm font-light text-gray-400 '>Bite-sized pieces of tender all breast meat chicken, seasoned to perfection</p>
+                                </div>
+                                <div className='h-40 bg-gray-100 w-40 flex relative overflow-hidden'>
+                                    <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/85c9bdbd7500311ecf28d8c648c941e6/a19bb09692310dfd41e49a96c424b3a6.jpeg" />
+                                    <button onClick={(e)=>e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                        <IoAdd size={30} />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div onClick={()=>setSelectedFood(1)} className='col-span-6' >
+
+                            <div className='h-40 border rounded-lg  flex items-center overflow-hidden'>
+                                <div className='flex-1 h-full p-5 flex flex-col space-y-2 overflow-hidden'>
+                                    <h3 className='leading-loose text-sm md:text-lg'>Chick-fil-A Chick-n-Minis™ Meal</h3>
+                                    <p className='text-sm font-light'>$13.85</p>
+                                    <p className='text-sm font-light text-gray-400 '>Bite-sized pieces of tender all breast meat chicken, seasoned to perfection</p>
+                                </div>
+                                <div className='h-40 bg-gray-100 w-40 flex relative overflow-hidden'>
+                                    <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/1091072bb299f23f63aa64884cbaade7/5954bcb006b10dbfd0bc160f6370faf3.jpeg" />
+                                    <button onClick={(e)=>e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                        <IoAdd size={30} />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+       {selectedFood && <FoodInfo close={()=>setSelectedFood(null) } />}
+
+
+        <Footer />
     </div>
 }
