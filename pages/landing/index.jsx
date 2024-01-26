@@ -15,7 +15,7 @@ export default function Landing() {
 
                 <div className='flex flex-1 flex-col justify-center space-y-5  md:pr-10'>
                     <div className='flex flex-col'>
-                        <p className="font-bold text-3xl leading-loose text-green-600 hidden md:flex">Eyepa Meal Order,</p>
+                        <p className="font-bold text-3xl leading-loose text-yellow-500 hidden md:flex">Eyepa Meal Order,</p>
                         <p className="font-bold text-3xl leading-loose text-center px-3 md:px-0 md:text-left">The food you love, delivered fast</p>
                     </div>
                     <div className=" md:w-3/4 flex flex-col items-start space-y-10">
@@ -23,7 +23,7 @@ export default function Landing() {
                             <HiLocationMarker size={20} color="gray" />
                             <input type="text" className="placeholder:text-gray-500 flex-1 py-3 md:py-2" placeholder='Enter Location' />
                         </div>
-                        <button className='bg-green-500 px-8 py-3  text-white rounded-md font-medium mx-auto md:mx-0'>
+                        <button className='bg-yellow-500 px-8 py-3  text-white rounded-md font-medium mx-auto md:mx-0'>
                             Continue
                         </button>
                     </div>
@@ -50,7 +50,7 @@ export default function Landing() {
 
                                 <div className='w-4/5 flex-col flex space-y-2'>
                                     <div className='flex items-center space-x-4'>
-                                        <div className='h-5 w-5 bg-green-500 flex items-center justify-center text-white rounded-full text-xs'>
+                                        <div className='h-5 w-5 bg-yellow-500 flex items-center justify-center text-white rounded-full text-xs'>
                                             <p>1</p>
                                         </div>
                                         <h4 className='flex items-center space-x-3 font-medium text-lg text-gray-600'>
@@ -95,7 +95,7 @@ export default function Landing() {
 
                                 <div className='w-4/5 flex-col flex space-y-2'>
                                     <div className='flex items-center space-x-4'>
-                                        <div className='h-5 w-5 bg-green-500 flex items-center justify-center text-white rounded-full text-xs'>
+                                        <div className='h-5 w-5 bg-yellow-500 flex items-center justify-center text-white rounded-full text-xs'>
                                             <p>1</p>
                                         </div>
                                         <h4 className='flex items-center space-x-3 font-medium text-lg text-gray-600'>
@@ -121,7 +121,7 @@ export default function Landing() {
 
                                 <div className='w-4/5 flex-col flex space-y-2'>
                                     <div className='flex items-center space-x-4'>
-                                        <div className='h-5 w-5 bg-green-500 flex items-center justify-center text-white rounded-full text-xs'>
+                                        <div className='h-5 w-5 bg-yellow-500 flex items-center justify-center text-white rounded-full text-xs'>
                                             <p>1</p>
                                         </div>
                                         <h4 className='flex items-center space-x-3 font-medium text-lg text-gray-600'>

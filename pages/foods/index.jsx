@@ -5,6 +5,9 @@ import Footer from '../../components/Footer'
 import { HiLocationMarker } from 'react-icons/hi';
 import { HiArrowLeft, HiArrowRight } from 'react-icons/hi2';
 import { FaRegHeart } from "react-icons/fa";
+import { useRouter } from 'next/router';
+import { FaHeart } from "react-icons/fa6";
+import SearchComponent from '../../components/SearchComponent';
 
 
 
@@ -215,43 +218,11 @@ const stores = [
 
 
 export default function Foods() {
+    const router = useRouter()
     return (
         <div className="min-h-screen flex flex-col">
             <Header />
-            <div className="border-b pb-3 px-5 md:px-0">
-                <div className="container mx-auto flex items-center flex-col md:flex-row md:space-x-10">
-                    <div className="flex items-center space-x-3 md:w-1/4 justify-between w-full">
-                        <div className="flex items-center space-x-3 flex-1">
-                            <div className="bg-gray-100 p-2 rounded-full">
-                                <HiLocationMarker size={20} color="gray" />
-                            </div>
-                            <div>
-                                <p className="text-xs text-gray-400">Current Location</p>
-                                <p>Accra - Spintex Road</p>
-                            </div>
-                        </div>
-                        <div className='w-1/4 p-5 md:hidden'>
-                            <button className=" text-gray-400 p-3 rounded-md relative flex space-x-2">
-                                <LuShoppingCart size={20} />
-                                <p>Cart</p>
-                                <div className="text-xs text-white bg-yellow-500 absolute -top-3 rounded-full border h-5 w-5 right-0">3</div>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="bg-gray-100 p-5 w-full md:w-[50vw] rounded-md flex items-center space-x-5">
-                        <LuSearch size={18} color={"gray"} />
-                        <input type="text" className="bg-transparent flex-1" placeholder="Search Food and Restaurants" />
-                    </div>
-                    <div className='w-1/4 p-5 hidden md:flex'>
-                        <button className="bg-black text-white p-3 rounded-md relative flex space-x-2">
-                            <LuShoppingCart size={20} />
-                            <p>Cart</p>
-                            <div className="text-xs text-white bg-yellow-500 absolute -top-3 rounded-full border h-5 w-5 right-0">3</div>
-                        </button>
-                    </div>
-                </div>
-            </div>
+<SearchComponent/>
 
             <div className="flex-1 flex flex-col space-y-10">
 
@@ -260,7 +231,7 @@ export default function Foods() {
                         <HiArrowLeft size={18} />
                     </button>
                     {
-                        foodCategories.map((data, index) => <div key={`food-category-${index}`} className='flex flex-col items-center'>
+                        foodCategories.map((data, index) => <div key={`food-category-${index}`} className='flex flex-col items-center cursor-pointer'>
                             <div className='h-16 w-16 flex items-center justify-center rounded-full border border-gray-100 overflow-hidden'>
                                 <img className='flex-1' src={data.image} />
                             </div>
@@ -297,9 +268,9 @@ export default function Foods() {
 
                         <div className='flex flex-row items-center space-x-5 overflow-hidden overflow-x-auto'>
 
-                            {feedData.stores.map((store, idx) => <div key={`store-${index}-${idx}`} className='w-2/3 md:w-1/4 flex flex-col space-y-3 shrink-0'>
+                            {feedData.stores.map((store, idx) => <div onClick={() => router.push('/store/'+idx)} key={`store-${index}-${idx}`} className='w-2/3 md:w-1/4 flex flex-col space-y-3 cursor-pointer shrink-0'>
                                 <div className="w-full flex bg-gray-300 h-40 rounded-xl relative overflow-hidden">
-                                    <img className="flex-1 object-cover" src={store.banner} />
+                                    <img alt={`${store.image}_banner`} className="flex-1 object-cover" src={store.banner} />
 
                                     <button className='absolute top-4 right-4'>
                                         <FaRegHeart size={20} color="white" />
@@ -307,8 +278,8 @@ export default function Foods() {
                                 </div>
                                 <div className='flex flex-row items-start justify-between'>
                                     <div className='flex flex-col space-y-1'>
-                                        <h3 className='font-medium'>Naya Brookfield Place</h3>
-                                        <p className='font-light text-gray-600'> 20–40 min</p>
+                                        <h3 className='font-medium'>{store.name}</h3>
+                                        <p className='font-light text-gray-600'> {store.estimatedTime[0]}–{store.estimatedTime[1]} min</p>
                                     </div>
                                     <div className='h-8 w-8 bg-gray-100 rounded-full items-center justify-center flex text-xs'>
                                         4.5
@@ -324,10 +295,6 @@ export default function Foods() {
                 }
 
 
-
-
-
-
                 <div className="flex flex-col container mx-auto border-b space-y-5 pb-5 px-5 md:px-0">
                     <div className='flex items-center justify-between '>
                         <h3 className='text-2xl font-medium'>All stores</h3>
@@ -337,7 +304,7 @@ export default function Foods() {
                     <div className='flex flex-row items-center  overflow-hidden flex-wrap'>
 
                         {
-                            stores.map((store, index) => <div key={`store-list-${index}`} className='w-full md:w-1/4 flex flex-col space-y-3 px-1 pb-10'>
+                            stores.map((store, index) => <div onClick={() => router.push('/store/'+index)} key={`store-list-${index}`} className='w-full md:w-1/4 flex flex-col cursor-pointer space-y-3 px-1 pb-10'>
                                 <div className="w-full flex bg-gray-300 h-40 rounded-xl relative overflow-hidden">
                                     <img className="flex-1 object-cover" src={store.banner} />
 
