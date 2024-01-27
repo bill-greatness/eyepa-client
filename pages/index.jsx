@@ -3,10 +3,8 @@ import axios from "axios";
 import { PROXY } from "./api";
 import { useState, useEffect } from "react";
 import { HorizontalCard, ItemCard } from "../components/Cards";
-
 import { BsSearch } from "react-icons/bs";
 import Link from "next/link";
-
 
 export default function Home() {
   const [stores, setStores] = useState([]);
