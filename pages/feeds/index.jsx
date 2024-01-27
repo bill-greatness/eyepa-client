@@ -220,7 +220,7 @@ const stores = [
 export default function Foods() {
     const router = useRouter()
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="h-screen w-screen overflow-y-auto flex flex-col">
             <Header />
             <SearchComponent />
 
@@ -332,6 +332,8 @@ export default function Foods() {
                 </div>
 
             </div>
+
+   
 
             <Footer />
         </div>

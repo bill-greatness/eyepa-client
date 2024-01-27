@@ -10,6 +10,7 @@ import { HiArrowLeft, HiArrowRight } from 'react-icons/hi2';
 import Footer from '../../components/Footer'
 import { IoAdd } from 'react-icons/io5';
 import FoodInfo from '../../components/FoodInfo';
+import AddToCart from '../../components/AddToCart';
 
 
 const banner = "https://images.bolt.eu/store/2022/2022-05-26/f0470c17-449f-4ed2-9461-b554135380ab.jpeg"
@@ -93,6 +94,7 @@ export default function Page() {
     const router = useRouter()
 
     const [openSimilar, setOpenSimilar] = useState(false)
+    const [openAddToCart, setOpenAddToCart] = useState(false)
     const [deliveryMode, setDeliveryMode] = useState(true)
 
     const [selectedFood, setSelectedFood] = useState(null)
@@ -265,7 +267,7 @@ export default function Page() {
 
                                 <div className='h-40 flex bg-gray-100 w-40 relative overflow-hidden'>
                                     <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/85c9bdbd7500311ecf28d8c648c941e6/a19bb09692310dfd41e49a96c424b3a6.jpeg" />
-                                    <button onClick={(e) => e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                    <button onClick={(e) => {e.stopPropagation();setOpenAddToCart(true)}} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
                                         <IoAdd size={30} />
                                     </button>
                                 </div>
@@ -283,7 +285,7 @@ export default function Page() {
 
                                 <div className='h-40 flex bg-gray-100 w-40 relative overflow-hidden'>
                                     <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/832c4dd1ff6d9232d9fcc97ac4468b0c/a19bb09692310dfd41e49a96c424b3a6.jpeg" />
-                                    <button onClick={(e) => e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                    <button onClick={(e) => {e.stopPropagation();setOpenAddToCart(true)}} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
                                         <IoAdd size={30} />
                                     </button>
                                 </div>
@@ -301,7 +303,7 @@ export default function Page() {
 
                                 <div className='h-40 flex bg-gray-100 w-40 relative overflow-hidden'>
                                     <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/1091072bb299f23f63aa64884cbaade7/5954bcb006b10dbfd0bc160f6370faf3.jpeg" />
-                                    <button onClick={(e) => e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                    <button onClick={(e) => {e.stopPropagation();setOpenAddToCart(true)}} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
                                         <IoAdd size={30} />
                                     </button>
                                 </div>
@@ -319,7 +321,7 @@ export default function Page() {
 
                                 <div className='h-40 flex bg-gray-100 w-40 relative overflow-hidden'>
                                     <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/79653b5f2987abe098e60af493c80381/5954bcb006b10dbfd0bc160f6370faf3.jpeg" />
-                                    <button onClick={(e) => e.stopPropagation()} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                    <button onClick={(e) => {e.stopPropagation();setOpenAddToCart(true)}} className='bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2'>
                                         <IoAdd size={30} />
                                     </button>
                                 </div>
@@ -349,10 +351,10 @@ export default function Page() {
                                 </div>
                                 <div className='h-24 w-24 md:h-40 bg-gray-100 md:w-40 flex relative overflow-hidden'>
                                     <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/85c9bdbd7500311ecf28d8c648c941e6/a19bb09692310dfd41e49a96c424b3a6.jpeg" />
-                                    <button onClick={(e) => e.stopPropagation()} className='hidden bg-white p-2 rounded-full md:flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                    <button onClick={(e) => {e.stopPropagation();setOpenAddToCart(true)}} className='hidden bg-white p-2 rounded-full md:flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
                                         <IoAdd size={30} />
                                     </button>
-                                      <button onClick={(e) => e.stopPropagation()} className='md:hidden bg-white p-2 rounded-full flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                    <button onClick={(e) => {e.stopPropagation();setOpenAddToCart(true)}} className='md:hidden bg-white p-2 rounded-full flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
                                         <IoAdd size={18} />
                                     </button>
                                 </div>
@@ -368,10 +370,10 @@ export default function Page() {
                                 </div>
                                 <div className='h-24 w-24 md:h-40 bg-gray-100 md:w-40 flex relative overflow-hidden'>
                                     <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/1091072bb299f23f63aa64884cbaade7/5954bcb006b10dbfd0bc160f6370faf3.jpeg" />
-                                    <button onClick={(e) => e.stopPropagation()} className='hidden bg-white p-2 rounded-full md:flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                    <button onClick={(e) => {e.stopPropagation();setOpenAddToCart(true)}} className='hidden bg-white p-2 rounded-full md:flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
                                         <IoAdd size={30} />
                                     </button>
-                                      <button onClick={(e) => e.stopPropagation()} className='md:hidden bg-white p-2 rounded-full flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                    <button onClick={(e) => {e.stopPropagation();setOpenAddToCart(true)}} className='md:hidden bg-white p-2 rounded-full flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
                                         <IoAdd size={18} />
                                     </button>
                                 </div>
@@ -387,10 +389,10 @@ export default function Page() {
                                 </div>
                                 <div className='h-24 w-24 md:h-40 bg-gray-100 md:w-40 flex relative overflow-hidden'>
                                     <img className='flex-1 object-cover' src="https://tb-static.uber.com/prod/image-proc/processed_images/1091072bb299f23f63aa64884cbaade7/5954bcb006b10dbfd0bc160f6370faf3.jpeg" />
-                                    <button onClick={(e) => e.stopPropagation()} className='hidden bg-white p-2 rounded-full md:flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                    <button onClick={(e) => {e.stopPropagation();setOpenAddToCart(true)}} className='hidden bg-white p-2 rounded-full md:flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
                                         <IoAdd size={30} />
                                     </button>
-                                      <button onClick={(e) => e.stopPropagation()} className='md:hidden bg-white p-2 rounded-full flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
+                                    <button onClick={(e) => {e.stopPropagation();setOpenAddToCart(true)}} className='md:hidden bg-white p-2 rounded-full flex absolute bottom-2 shadow-sm border-gray-100 right-2'>
                                         <IoAdd size={18} />
                                     </button>
                                 </div>
@@ -403,8 +405,8 @@ export default function Page() {
             </div>
         </div>
 
-
-
+       
+        {openAddToCart && <AddToCart close={()=>setOpenAddToCart(false)} />}
         {selectedFood && <FoodInfo close={() => setSelectedFood(null)} />}
 
 

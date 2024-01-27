@@ -7,7 +7,7 @@ import Header from '../../components/Header'
 
 export default function Landing() {
     return (
-        <div className="w-screen min-h-screen bg-gray-50">
+        <div className="w-screen h-screen overflow-y-auto overflow-hidden bg-gray-50">
 
             <Header />
 
