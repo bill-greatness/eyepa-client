@@ -1,17 +1,29 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoMdAddCircle, IoIosRemoveCircle } from "react-icons/io";
 import { FaHeartCirclePlus } from "react-icons/fa6";
-
+import { useRouter } from "next/router";
 export default function FoodDetails() {
   const [show, setShow] = useState(false);
+  const [food, setFood] = useState({});
 
+  const router = useRouter();
+
+  useEffect(() => {
+    async function getFood() {
+      try {
+        const { data } = await axios.get(`/food/${router.query.food_id}`);
+        setFood(data);
+      } catch (err) {}
+    }
+    getFood();
+  }, [router.query]);
   return (
     <div className="container">
       <div className="w-full sticky top-0  bg-blue-50 flex items-center justify-between p-5">
         <div className="flex flex-col">
           <p>Details</p>
-          <p className="text-lg font-semibold">Name of Food</p>
+          <p className="text-lg font-semibold">{food?.name}</p>
         </div>
         <div className="flex flex-col">
           <p>Price</p>
@@ -21,16 +33,12 @@ export default function FoodDetails() {
 
       <div className="flex-1 rounded-t-3xl p-5">
         <img
-          src="https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+          src={food?.photo}
           className="w-full h-40 bg-green-500 rounded-md object-cover"
         />
         <div className="p-2">
           <p className="font-semibold">About this food</p>
-          <p className="text-sm leading-relaxed">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam
-            dolores nisi deleniti ipsam natus magnam quo voluptatum similique
-            praesentium quisquam!
-          </p>
+          <p className="text-sm leading-relaxed">{food?.description}</p>
         </div>
         <div className="flex gap-3 p-5 items-center mt-2">
           <p className="text-md font-bold">Size</p>
@@ -49,13 +57,13 @@ export default function FoodDetails() {
           <p className="font-semibold">Choice of Addon</p>
           <table className="table-auto w-full">
             <tbody>
-              {[1, 3, 3, 4, 5, 6].map((info, idx) => (
+              {food?.addons?.map((info, idx) => (
                 <tr className="border-b text-sm" key={idx}>
                   <td className="p-2 font-semibold">Name of Addon</td>
                   <td className="p-2 font-bold">12GHS</td>
                   <td>
                     <button className="p-2" onClick={() => setShow(!show)}>
-                      <FaHeartCirclePlus size={20} color="gray"/>
+                      <FaHeartCirclePlus size={20} color="gray" />
                     </button>
                   </td>
                 </tr>
