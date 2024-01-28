@@ -1,10 +1,20 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import Head from "next/head";
 import { BsDot } from "react-icons/bs";
 export default function Account() {
     const [show, setShow] = useState(false)
   return (
     <div className="flex-1">
+      <Head>
+        <title>Your Profile- Eyepa Delivery</title>
+        <meta
+          name="description"
+          content="Your profile on Eyepa Delivery"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       <div className="w-full bg-yellow-500 sticky top-0 h-56 flex flex-col items-center justify-center">
         <div className="w-24 h-24 bg-red-500 rounded-md"></div>
         <p className="text-2xl font-bold leading-relaxed">Bill Greatness</p>
@@ -55,7 +65,7 @@ export default function Account() {
           initial={{ y: 100 }}
           animate={{ y: 0 }}
           exit={{ y: 100 }}
-          className="h-96 w-screen rounded-t-3xl border-t-2 border-t-black bg-white shadow-lg fixed bottom-0 overflow-y-auto"
+          className="h-4/5 w-screen rounded-t-3xl border-t-2 border-t-black bg-white shadow-lg fixed bottom-0 overflow-y-auto"
         >
           <div className="flex w-full items-center gap-2 p-5 border-b">
             <div className="w-20 h-20 rounded-md bg-gray-500 border-t-2"></div>

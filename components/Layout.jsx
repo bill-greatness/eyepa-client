@@ -1,7 +1,12 @@
-export default function Layout({children}){
-    return (
-        <div className="flex">
-            This is a long type of sh*t yt
-        </div>
-    )
+import BottomNav from "./BottomNav";
+import TopNav from "./TopNav";
+
+export default function Layout({ children }) {
+  return (
+    <div className="flex-1 container">
+      <TopNav />
+      <div className="flex-1">{children}</div>
+      <BottomNav />
+    </div>
+  );
 }

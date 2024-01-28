@@ -2,9 +2,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { IoMdAddCircle, IoIosRemoveCircle } from "react-icons/io";
 
-export default function FoodDetails({food}) {
+export default function FoodDetails() {
   const [show, setShow] = useState(false);
-
+  
   return (
     <div className="container">
       <div className="w-full sticky top-0 bg-blue-50 flex items-center justify-between p-5">

@@ -1,15 +1,17 @@
 import { AnimatePresence, motion } from "framer-motion";
-export default function Notification() {
+export default function Notification({close}) {
   return (
     <AnimatePresence>
       <motion.div
         initial={{ y: 100 }}
         animate={{ y: 0 }}
         exit={{ y: 100 }}
+        transition={{type:'spring'}}
         className="container fixed top-10 bg-white"
       >
-        <div className="p-3">
+        <div className="p-3 justify-between px-5 flex">
           <p className="text-lg font-semibold">Notifications</p>
+          <button onClick={() => close(false)}>Close</button>
         </div>
         <div className="flex flex-col gap-2 px-5 h-[90vh] overflow-y-auto pb-20">
           {[1, 3, 4, 5, 6].map((info, idx) => (
