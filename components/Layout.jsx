@@ -4,9 +4,9 @@ import TopNav from "./TopNav";
 export default function Layout({ children }) {
   return (
     <div className="flex-1 container">
-      <TopNav />
+      {/* <TopNav /> */}
       <div className="flex-1">{children}</div>
-      <BottomNav />
+      {/* <BottomNav /> */}
     </div>
   );
 }
