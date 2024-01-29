@@ -61,7 +61,7 @@ export default function Orders() {
                         <p className='text-gray-500 text-sm'>You currently have no running orders</p>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 md:gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 md:gap-4">
                         <div onClick={() => router.push('/orders/4')} className=' cursor-pointer' >
 
                             <div className='md:min-h-40 border-b md:border md:rounded-lg  flex items-center overflow-hidden'>
@@ -117,7 +117,7 @@ export default function Orders() {
 
                         <h3 className='text-2xl'>This month's orders</h3>
 
-                        <div class="grid grid-cols-1 md:grid-cols-3 md:gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 md:gap-4">
                             <div onClick={() => router.push('/orders/4')} className=' cursor-pointer' >
 
                                 <div className='md:min-h-40 border-b md:border md:rounded-lg  flex items-center overflow-hidden'>

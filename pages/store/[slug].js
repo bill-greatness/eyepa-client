@@ -95,9 +95,9 @@ export default function Page() {
 
     const [openSimilar, setOpenSimilar] = useState(false)
     const [openAddToCart, setOpenAddToCart] = useState(false)
+    const [selectedFood, setSelectedFood] = useState(null)
     const [deliveryMode, setDeliveryMode] = useState(true)
 
-    const [selectedFood, setSelectedFood] = useState(null)
 
 
     console.log(router.query.slug)
@@ -340,7 +340,7 @@ export default function Page() {
 
                     <h3 className='text-2xl'>Breakfast</h3>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
                         <div onClick={() => setSelectedFood(1)} className='' >
 
                             <div className='md:h-40 border-b md:border md:rounded-lg  flex items-center overflow-hidden'>

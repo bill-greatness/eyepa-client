@@ -62,7 +62,7 @@ export default function Header() {
                                 <p className='font-medium text-lg text-center'>James Bieber Hatsso</p>
                                 <p className='font-light text-xs hover:text-green-500 text-center'>Customer Account</p>
                             </div>
-                            <button onClick={() => router.push('/auth')} className='w-full text-red-500 font-semibold text-white rounded-md'>
+                            <button onClick={() => router.push('/auth')} className='w-full text-red-500 font-semibold rounded-md'>
                                 Sign out
                             </button>
                         </div>
