@@ -16,6 +16,7 @@ export default function Footer() {
                         alt="logo"
                     />
                     <div className='flex flex-col space-y-2'>
+                    <a className='hover:text-green-600 text-lg md:text-base w-2/3 text-gray-500 ' href='#'>A Arhinful Ave, Sekondi - Takoradi , Ghana</a>
 
                     </div>
                 </div>
@@ -23,26 +24,25 @@ export default function Footer() {
                 <div className='md:w-1/4 flex flex-col space-y-3'>
                     <h2 className='font-medium'>Eyepa</h2>
                     <div className='flex flex-col space-y-2 text-gray-400 font-light'>
-                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Suppliers</a>
-                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Terms & Conditions</a>
+                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>All Countries</a>
+                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Faqs</a>
 
-                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Privacy</a>
+                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>ios</a>
 
-                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Cookies</a>
-                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Security</a>
+                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Android</a>
+                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Jobs</a>
                     </div>
                 </div>
                 <div className='md:w-1/4 flex flex-col space-y-3'>
                     <h2 className='font-medium'>Partner with Eyepa</h2>
 
                     <div className='flex flex-col space-y-2 text-gray-400 font-light'>
-                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Suppliers</a>
-                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Terms & Conditions</a>
+                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Create a business account</a>
+                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Add your restaurant</a>
 
-                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Privacy</a>
+                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Sign up to deliver</a>
 
-                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Cookies</a>
-                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Security</a>
+                        <a className='hover:text-green-600 text-lg md:text-sm' href='#'>Advertisement</a>
                     </div>
                 </div>
                 <div className='md:w-1/4 flex flex-col space-y-3'>
