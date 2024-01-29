@@ -10,7 +10,7 @@ export default function Header() {
 
     const [showMenue, setShowMenue] = useState(false)
     return (
-        <header className="py-3 ">
+        <header className="py-3 sticky top-0 z-50 bg-white">
             <div className="flex items-center justify-between container mx-auto px-5 md:px-0">
                 <div className="cursor-pointer" onClick={() => router.push('/landing')}>
                     <Image

@@ -1,100 +1,188 @@
-import Head from "next/head";
-import axios from "axios";
-import { PROXY } from "./api";
-import { useState, useEffect } from "react";
-import { HorizontalCard, ItemCard } from "../components/Cards";
-import { BsSearch } from "react-icons/bs";
-import Link from "next/link";
+import React from 'react'
+import Image from 'next/image'
+import { HiChevronDown } from 'react-icons/hi2'
+import { HiLocationMarker } from "react-icons/hi";
+import Footer from '../components/Footer';
+import Header from '../components/Header'
 
-export default function Home() {
-  const [stores, setStores] = useState([]);
-  useEffect(() => {
-    async function getStores() {
-      try {
-        const { data } = await axios.get(`${PROXY}/store/all/United Kingdom`);
-        setStores(data);
-      } catch (err) {}
-    }
-    getStores();
-  }, []);
-  return (
-    <div>
-      <Head>
-        <title>Eyepa Delivery Foods</title>
-        <meta
-          name="description"
-          content="Find great foods from restaurants near you"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+export default function Landing() {
+    return (
+        <div className="w-screen h-screen overflow-y-auto overflow-hidden bg-gray-50">
 
-      <main className="container">
-        {/* Home Page... */}
-        <div className="flex flex-col container">
-          <div
-            className="w-full m-1 flex flex-col justify-center p-3 h-40 rounded-md bg-gray-500 bg-blend-multiply mx-1 bg-cover bg-center"
-            style={{
-              backgroundImage:
-                "url(https://media.istockphoto.com/id/1457433817/photo/group-of-healthy-food-for-flexitarian-diet.jpg?s=612x612&w=0&k=20&c=v48RE0ZNWpMZOlSp13KdF1yFDmidorO2pZTu2Idmd3M=)",
-            }}
-          >
-            <p className="text-2xl text-gray-100">New Recipe</p>
-            <p className="text-sm text-white">
-              Get 20% discount on purchase from...
-            </p>
-          </div>
-          <div className="w-full p-2">
-            <div className="flex items-center w-full bg-gray-100 rounded-lg border-gray-300 p-3">
-              <BsSearch size={24} color="gray" />
-              <input
-                placeholder="Search food, restaurant, drink etc..."
-                className="p-2 w-full bg-gray-100 outline-none"
-              />
-            </div>
-          </div>
+            <Header />
 
-          {/* Good groups... */}
-          <div className="flex w-screen overflow-x-auto">
-            <div className="flex gap-2 justify-around p-2">
-              {[1, 3, 4, 5, 6, 7, 8, 19].map((info, idx) => (
-                <button
-                  key={idx}
-                  className="w-20 h-20 p-1 flex flex-col items-center gap-1"
-                >
-                  <img
-                    src="https://img.freepik.com/free-photo/tasty-burger-isolated-white-background-fresh-hamburger-fastfood-with-beef-cheese_90220-1063.jpg?size=338&ext=jpg&ga=GA1.1.632798143.1705536000&semt=sph"
-                    alt="Food Type"
-                    className="rounded-full object-contain w-12 h-12"
-                  />
-                  <p className="text-xs leading-relaxed font-bold">Food Type</p>
-                </button>
-              ))}
+            <div className='container mx-auto flex h-[70vh] overflow-hidden flex-col px-5 md:px-0 md:flex-row'>
+
+                <div className='flex flex-1 flex-col justify-center space-y-5  md:pr-10'>
+                    <div className='flex flex-col'>
+                        <p className="font-bold text-3xl leading-loose text-yellow-500 hidden md:flex">Eyepa Meal Order,</p>
+                        <p className="font-bold text-3xl leading-loose text-center px-3 md:px-0 md:text-left">The food you love, delivered fast</p>
+                    </div>
+                    <div className=" md:w-3/4 flex flex-col items-start space-y-10">
+                        <div className=" w-full p-3 bg-white rounded-md border border-gray-100 flex items-center space-x-2 px-3">
+                            <HiLocationMarker size={20} color="gray" />
+                            <input type="text" className="placeholder:text-gray-500 flex-1 py-3 md:py-2" placeholder='Enter Location' />
+                        </div>
+                        <button className='bg-yellow-500 px-8 py-3  text-white rounded-md font-medium mx-auto md:mx-0'>
+                            Continue
+                        </button>
+                    </div>
+                </div>
+                <div className='flex flex-1  overflow-hidden'>
+                    <img
+                        className='rounded-xl rotate-180 md:rotate-0 object-cover mx-auto'
+                        src="/assets/cover.png"
+                        alt="logo"
+                    />
+                </div>
+
             </div>
-          </div>
-          <div className="flex w-screen overflow-x-auto py-10 px-5">
-            <div className="flex justify-around gap-2 ">
-              {[1, 2, 4, 5].map((info, idx) => (
-                <HorizontalCard />
-              ))}
+
+            <div className='flex flex-col px-5 bg-white'>
+
+                <div className="bg-white flex min-h-[70vh] py-10">
+
+                    <div className='flex-1 flex container md:mx-auto flex-col-reverse md:flex-row'>
+                        <div className='flex-1 flex flex-col space-y-8'>
+                            <h3 className='text-3xl leading-relaxed md:w-1/2 font-bold text-gray-700'>Make money with food delivery</h3>
+
+                            <div className='flex flex-col space-y-5'>
+
+                                <div className='w-4/5 flex-col flex space-y-2'>
+                                    <div className='flex items-center space-x-4'>
+                                        <div className='h-5 w-5 bg-yellow-500 flex items-center justify-center text-white rounded-full text-xs'>
+                                            <p>1</p>
+                                        </div>
+                                        <h4 className='flex items-center space-x-3 font-medium text-lg text-gray-600'>
+                                            Earn extra income, fast!
+                                        </h4>
+                                    </div>
+                                    <p className='text-gray-500 font-light leading-relaxed'>There’s no subscription fee. You’ll receive your earnings at the end of each week.</p>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div className='flex-1 flex mb-10 md:mb-0'>
+                            <Image
+                                className='rounded-xl'
+                                src="/assets/courier.webp"
+                                width={500}
+                                height={500}
+                                alt="Picture of the author"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-white flex min-h-[70vh] py-10">
+
+                    <div className='flex-1 flex container md:mx-auto flex-col md:flex-row'>
+                        <div  className='flex-1 flex mb-10 md:mb-0'>
+                            <Image
+                                className='rounded-xl'
+                                src="/assets/bolt-food-bag.webp"
+                                width={500}
+                                height={500}
+                                alt="Picture of the author"
+                            />
+                        </div>
+                        <div className='flex-1 flex flex-col space-y-8'>
+
+                            <h3 className='text-3xl leading-relaxed md:w-1/2 font-bold text-gray-700'>Boost your sales</h3>
+
+                            <div className='flex flex-col space-y-5'>
+
+                                <div className='w-4/5 flex-col flex space-y-2'>
+                                    <div className='flex items-center space-x-4'>
+                                        <div className='h-5 w-5 bg-yellow-500 flex items-center justify-center text-white rounded-full text-xs'>
+                                            <p>1</p>
+                                        </div>
+                                        <h4 className='flex items-center space-x-3 font-medium text-lg text-gray-600'>
+                                            Earn extra income, fast!
+                                        </h4>
+                                    </div>
+                                    <p className='text-gray-500 font-light leading-relaxed'>There’s no subscription fee. You’ll receive your earnings at the end of each week.</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-white flex min-h-[70vh] py-10">
+
+                    <div className='flex-1 flex container md:mx-auto flex-col-reverse md:flex-row'>
+                        <div className='flex-1 flex flex-col space-y-8'>
+
+                            <h3 className='text-3xl leading-relaxed md:w-4/6 font-bold text-gray-700'>Discover, order, and track in the app</h3>
+
+                            <div className='flex flex-col space-y-5'>
+
+                                <div className='w-4/5 flex-col flex space-y-2'>
+                                    <div className='flex items-center space-x-4'>
+                                        <div className='h-5 w-5 bg-yellow-500 flex items-center justify-center text-white rounded-full text-xs'>
+                                            <p>1</p>
+                                        </div>
+                                        <h4 className='flex items-center space-x-3 font-medium text-lg text-gray-600'>
+                                            Earn extra income, fast!
+                                        </h4>
+                                    </div>
+                                    <p className='text-gray-500 font-light leading-relaxed'>There’s no subscription fee. You’ll receive your earnings at the end of each week.</p>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div className='flex-1 flex mb-10 md:mb-0'>
+                            <Image
+                                className='rounded-xl'
+                                src="/assets/image.webp"
+                                width={500}
+                                height={500}
+                                alt="Picture of the author"
+                            />
+                        </div>
+                    </div>
+                </div>
+
             </div>
-          </div>
+
+            <div className='flex flex-col bg-white pb-5'>
+
+
+                <div className='container mx-auto flex flex-col space-y-3'>
+
+
+                    <h3 className='text-center text-xl md:text-3xl font-bold py-10'>Frequently Asked Questions</h3>
+
+                    <div className='flex flex-col space-y-5 items-center px-5 md:px-0'>
+
+
+                        <div className='md:w-2/4 border shadow bg-white border-gray-300 rounded-lg p-5 flex flex-col space-y-2'>
+                            <div className='flex items-center justify-between'>
+                                <h3 className='text-left text-lg text-gray-800 font-medium'>How can I find delivery restaurants near me?</h3>
+                                <button className='bg-gray-100 rounded-full p-1'>
+                                    <HiChevronDown size={18} />
+                                </button>
+                            </div>
+                            <p className='text-base text-gray-500'>Eyepa Food has a huge selection of restaurants and stores in your city. Just enter your address or turn on “location services”, and you’ll be able to see which restaurants deliver near you.</p>
+                        </div>
+
+                    </div>
+
+                    <button className='bg-gray-200 w-fit mx-auto px-3 text-sm font-medium py-2 text-gray-600 rounded-full'>
+                        View more
+                    </button>
+
+                </div>
+
+
+
+            </div>
+
+            <Footer />
+
+
         </div>
-        {/* Popular Foods */}
-        <div className="flex flex-col gap-2 pb-20 p-5">
-          <div className="flex w-full justify-between">
-            <p className="text-md font-bold">Popular Foods</p>
-
-            <Link href={"/foods"} className="text-md font-semibold">
-              See More
-            </Link>
-          </div>
-          {[1, 2, 3, 4, 5].map((info, idx) => (
-            <ItemCard />
-          ))}
-        </div>
-
-
-      </main>
-    </div>
-  );
+    )
 }
