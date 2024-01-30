@@ -4,8 +4,9 @@ import { IoLogoAndroid, IoLogoAppleAppstore, IoTriangleSharp } from 'react-icons
 import { FaAndroid, FaBars } from 'react-icons/fa6'
 import { useRouter } from 'next/router'
 import { HiUserCircle, HiX } from 'react-icons/hi'
+import Head from 'next/head'
 
-export default function Header() {
+export default function Header({title, description}) {
     const router = useRouter()
 
     const [showMenue, setShowMenue] = useState(false)
@@ -14,6 +15,12 @@ export default function Header() {
 
     return (
         <header className="py-3 sticky top-0 z-50 bg-white">
+            <Head>
+                <title>{title}</title>
+                <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+                <meta content={description} name="description" />
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-a5Toku6TZnzEUwSSWHHkvGSkpMvwrMo&libraries=places"></script>
+            </Head>
             <div className="flex items-center justify-between container mx-auto px-5 md:px-0">
                 <div className="cursor-pointer" onClick={() => router.push('/landing')}>
                     <Image

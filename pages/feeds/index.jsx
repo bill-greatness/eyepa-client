@@ -86,6 +86,7 @@ const foodCategories = [
 export default function Foods() {
   const router = useRouter();
   const [food, setFood] = useState(null);
+  const [country, setCountry] = useState("");
   const [item, setItem] = useState(null);
   const [foods, setFoods] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -93,25 +94,34 @@ export default function Foods() {
   const [category, setCategory] = useState("All");
 
   useEffect(() => {
-    getDocs({
-      path: "/food/all/United Kingdom",
-      getter: setFoods,
-    });
-    getDocs({
-      path: "/food/categories",
-      getter: setCategories,
-    });
-    getDocs({
-      path: "/store/all/United Kingdom",
-      getter: setStores,
-    });
+    if (typeof window !== undefined) {
+      setCountry(localStorage.getItem("country") || "");
+    }
 
     // ask user for their location.
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((info) => {
-        console.log(info);
+        const { latitude, longitude } = info?.coords;
+        getDocs({
+          path: `/food/near-me/${latitude}/${longitude}`,
+          getter: setFoods,
+        });
+
+        getDocs({
+          path: `/store/near/territory?lat=${latitude}&long=${longitude}`,
+          getter: setStores,
+        });
+
       });
+    } else {
+      alert("Kindly Allow Location");
     }
+
+    getDocs({
+      path: "/food/categories",
+      getter: setCategories,
+    });
+
   }, []);
 
   const filterFeeds = () => {
@@ -139,9 +149,14 @@ export default function Foods() {
     return data;
   };
 
+  console.log(foods);
+
   return (
     <div className="h-screen w-screen overflow-y-auto flex flex-col">
-      <Header />
+      <Header
+        title={"Home - Eyepa Delivery Services"}
+        description={"All your items delivered with Eyepa Services"}
+      />
       <SearchComponent />
 
       <div className="flex-1 flex flex-col space-y-10">
@@ -220,7 +235,7 @@ export default function Foods() {
           </div>
 
           <div className="flex flex-row items-center  overflow-hidden flex-wrap">
-            {stores.map((store, index) => (
+            {stores?.map((store, index) => (
               <div
                 onClick={() => router.push("/store/" + store?._id)}
                 key={`store-list-${index}`}

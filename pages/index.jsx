@@ -10,7 +10,7 @@ export default function Landing() {
   
   return (
     <div className="w-screen h-screen overflow-y-auto overflow-hidden bg-gray-50">
-      <Header />
+      <Header title={"Eyepa  Delivery Services"} description={"Get all you item delivered by just a click away"} />
 
       <div className="container mx-auto flex h-[70vh] overflow-hidden flex-col px-5 md:px-0 md:flex-row">
         <div className="flex flex-1 flex-col justify-center space-y-5  md:pr-10">
@@ -31,7 +31,7 @@ export default function Landing() {
                 placeholder="Enter Location"
               />
             </div>
-            
+
             <button className="bg-yellow-500 px-8 py-3  text-white rounded-md font-medium mx-auto md:mx-0">
               Continue
             </button>
