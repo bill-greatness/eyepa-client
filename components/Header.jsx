@@ -24,8 +24,8 @@ export default function Header({ title, description }) {
         <title>{title}</title>
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <meta content={description} name="description" />
-        <Script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-a5Toku6TZnzEUwSSWHHkvGSkpMvwrMo&libraries=places"></Script>
       </Head>
+      <Script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-a5Toku6TZnzEUwSSWHHkvGSkpMvwrMo&libraries=places"></Script>
       <div className="flex items-center justify-between container mx-auto px-5 md:px-0">
         <div className="cursor-pointer" onClick={() => router.push("/landing")}>
           <Image
