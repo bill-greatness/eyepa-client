@@ -5,7 +5,7 @@ import { HiChevronDown } from "react-icons/hi2";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { useRouter } from "next/router";
-import CompletePlaces from "react-places-autocomplete";
+// import CompletePlaces from "react-places-autocomplete";
 import Script from "next/script";
 
 export default function Landing() {

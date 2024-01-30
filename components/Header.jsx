@@ -20,8 +20,8 @@ export default function Header({ title, description }) {
 
   return (
     <header className="py-3 sticky top-0 z-50 bg-white">
-      <Head>
       <Script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-a5Toku6TZnzEUwSSWHHkvGSkpMvwrMo&libraries=places&loading=async"></Script>
+      <Head>
         <title>{title}</title>
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <meta content={description} name="description" />
