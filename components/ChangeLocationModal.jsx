@@ -53,6 +53,7 @@ export default function ChangeLocationModal({ close, setAddress }) {
                       : { backgroundColor: "#ffffff", cursor: "pointer" };
                     return (
                       <div
+                        key={suggestion.index}
                         {...getSuggestionItemProps(suggestion, {
                           className,
                           style,

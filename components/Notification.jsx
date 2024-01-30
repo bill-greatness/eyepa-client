@@ -15,7 +15,7 @@ export default function Notification({close}) {
         </div>
         <div className="flex flex-col gap-2 px-5 h-[90vh] overflow-y-auto pb-20">
           {[1, 3, 4, 5, 6].map((info, idx) => (
-            <NotificationCard />
+            <NotificationCard key={idx}/>
           ))}
         </div>
       </motion.div>
