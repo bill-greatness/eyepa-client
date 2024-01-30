@@ -22,6 +22,10 @@ export default function AddToCart({ close, item }) {
           price: parseFloat(info.price).toFixed(2),
         },
       ]);
+
+      let addonPrice = _.sumBy(addons, (ad) => ad.price);
+
+      setTotalPrice(parseFloat(addonPrice + item?.price));
       return;
     }
 
@@ -51,7 +55,7 @@ export default function AddToCart({ close, item }) {
 
       let addonPrice = _.sumBy(temp, (ad) => ad.price);
 
-      setTotalPrice(parseFloat(addonPrice + item?.price));
+      setTotalPrice((prev) => parseFloat(addonPrice + item?.price));
       setAddons(temp);
 
       return;

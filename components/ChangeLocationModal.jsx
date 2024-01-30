@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { HiLocationMarker, HiX } from "react-icons/hi";
 import CompletePlaces from "react-places-autocomplete";
+
+
 export default function ChangeLocationModal({ close, setAddress }) {
   const [location, setLocation] = useState("");
   return (

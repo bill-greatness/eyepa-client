@@ -10,6 +10,16 @@ import { getDocs } from "../../functions/call";
 import AddToCart from "../../components/AddToCart";
 import FoodInfo from "../../components/FoodInfo";
 
+const randomImages = [
+  "https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/FastFood.png",
+  "https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/Halal.png",
+  "https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/American.png",
+  "https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/Chinese.png",
+  "https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/Italian.png",
+  "https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/Burgers.png",
+  "https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/Wings.png",
+  "https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/Sushi.png",
+];
 const foodCategories = [
   {
     name: "Pizza",
@@ -23,23 +33,19 @@ const foodCategories = [
   },
   {
     name: "American",
-    image:
-      "https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/American.png",
+    image: "",
   },
   {
     name: "Halal",
-    image:
-      "https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/Halal.png",
+    image: "",
   },
   {
     name: "Chinese",
-    image:
-      "https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/Chinese.png",
+    image: "",
   },
   {
     name: "Sushi",
-    image:
-      "https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/Sushi.png",
+    image: "",
   },
   {
     name: "Healthy",
@@ -58,8 +64,7 @@ const foodCategories = [
   },
   {
     name: "FastFood",
-    image:
-      "https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/FastFood.png",
+    image: "",
   },
   {
     name: "Soup",
@@ -73,13 +78,11 @@ const foodCategories = [
   },
   {
     name: "Wings",
-    image:
-      "https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/Wings.png",
+    image: "",
   },
   {
     name: "Burgers",
-    image:
-      "https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/Burgers.png",
+    image: "",
   },
 ];
 
@@ -109,9 +112,8 @@ export default function Foods() {
 
         getDocs({
           path: `/store/near/territory?lat=${latitude}&long=${longitude}`,
-          getter: setStores,
+          getter: (data) => setStores(data || []),
         });
-
       });
     } else {
       alert("Kindly Allow Location");
@@ -121,7 +123,6 @@ export default function Foods() {
       path: "/food/categories",
       getter: setCategories,
     });
-
   }, []);
 
   const filterFeeds = () => {
@@ -146,10 +147,23 @@ export default function Foods() {
         foods: value,
       });
     });
-    return data;
+    return category === "All"
+      ? data
+      : _.filter(data, (dt) => dt.category === category);
   };
 
-  console.log(foods);
+  const getCategories = () => {
+    const grouped = _.groupBy(foods, (fd) => fd.category);
+    let available = [{ category: "All", photo: randomImages[3] }];
+    Object.entries(grouped).forEach(([key, _]) => {
+      available.push({
+        category: key,
+        photo: randomImages[0],
+      });
+    });
+
+    return available;
+  };
 
   return (
     <div className="h-screen w-screen overflow-y-auto flex flex-col">
@@ -164,16 +178,16 @@ export default function Foods() {
           <button className="hidden md:flex bg-gray-100 p-2 rounded-full bg-opacity-80 backdrop-blur-sm left-0 sticky">
             <HiArrowLeft size={18} />
           </button>
-          {foodCategories.map((data, index) => (
+          {getCategories()?.map((data, index) => (
             <button
-              onClick={() => setCategory(data)}
+              onClick={() => setCategory(data.category)}
               key={`food-category-${index}`}
               className="flex flex-col items-center cursor-pointer"
             >
               <div className="h-16 w-16 flex items-center justify-center rounded-full border border-gray-100 overflow-hidden">
-                <img className="flex-1" src={data.image} />
+                <img className="flex-1" src={data.photo} alt={data.category} />
               </div>
-              <p>{data.name}</p>
+              <p>{data.category}</p>
             </button>
           ))}
           <button className="hidden md:flex bg-gray-100 p-2 rounded-full bg-opacity-80 backdrop-blur-sm right-0 sticky">
@@ -181,17 +195,17 @@ export default function Foods() {
           </button>
         </div>
         <div className="flex flex-col md:p-10">
-          {foodsByCategory().map((fdx, idx) => (
+          {foodsByCategory()?.map((fdx, idx) => (
             <div className="" key={idx}>
               <div className="py-3">
                 <h3 className="md:text-2xl text-lg">{fdx.category}</h3>
               </div>
-              <div className="flex flex-row items-center space-x-5 overflow-hidden overflow-x-auto">
+              <div className="flex flex-row items-center gap-5 overflow-hidden overflow-x-auto">
                 {fdx.foods?.map((fd, idx) => (
                   <div
                     onClick={() => setFood(fd)}
                     key={idx}
-                    className="w-2/3 md:w-1/4 flex flex-col space-y-3 p-2 cursor-pointer shrink-0"
+                    className="w-2/3 md:w-1/4 flex flex-col gap-3 p-2 cursor-pointer shrink-0"
                   >
                     <div className="w-full flex bg-gray-300 h-40 rounded-xl relative overflow-hidden">
                       <img
@@ -208,7 +222,7 @@ export default function Foods() {
                       <div className="flex flex-col space-y-2">
                         <h3 className="font-medium">{fd?.name}</h3>
                         <div className="flex items-center gap-2">
-                          {fd.tags?.slice(0, 2).map((tg) => (
+                          {fd.tags?.slice(0, 2)?.map((tg) => (
                             <button
                               key={tg}
                               className="w-fit text-xs uppercase px-2 py-1 bg-gray-100 tracking-widest"
@@ -231,7 +245,7 @@ export default function Foods() {
 
         <div className="flex flex-col container mx-auto border-b space-y-5 pb-5 px-5 md:px-0">
           <div className="flex items-center justify-between ">
-            <h3 className="text-2xl font-medium">All stores</h3>
+            <h3 className="text-2xl font-medium">Restaurants near you</h3>
           </div>
 
           <div className="flex flex-row items-center  overflow-hidden flex-wrap">

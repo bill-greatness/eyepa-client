@@ -99,10 +99,10 @@ export default function Page() {
   const [openSimilar, setOpenSimilar] = useState(false);
   const [store, setStore] = useState({});
   const [foods, setFoods] = useState([]);
-  const [openAddToCart, setOpenAddToCart] = useState(false);
+  const [item, setItem] = useState(null);
   const [deliveryMode, setDeliveryMode] = useState(true);
 
-  const [selectedFood, setSelectedFood] = useState(null);
+  const [food, setFood] = useState(null);
 
   useEffect(() => {
     getDocs({
@@ -116,9 +116,15 @@ export default function Page() {
     });
   }, [router.query.slug]);
 
+  const addItem = (item) => {
+    setItem(item);
+    setFood(null);
+  };
+
+
   return (
     <div className="w-screen h-screen bg-white overflow-hidden overflow-y-auto">
-      <Header />
+      <Header title={store?.name + '-Eyepa Delivery'} description={`Browse ${store?.name} foods on Eyepa Delivery`}/>
       <SearchComponent />
 
       <div className="h-60 bg-gray-500 flex relative overflow-hidden">
@@ -211,7 +217,7 @@ export default function Page() {
             <div className="flex flex-row items-center space-x-5 overflow-hidden overflow-x-auto">
               {foods?.map((fd, idx) => (
                 <div
-                  onClick={() => router.push("/foods/id/" + fd._id)}
+                  onClick={() => setFood(fd)}
                   key={`store-${idx}`}
                   className="w-2/3 md:w-1/4 flex flex-col space-y-3 cursor-pointer shrink-0"
                 >
@@ -295,20 +301,20 @@ export default function Page() {
       </div>
 
       <div className="flex items-start md:space-x-3 container mx-auto"></div>
-      <div className="hidden w-1/4 text-lg md:flex flex-col space-y-5 text-gray-500 sticky top-10">
+  {/*    <div className="hidden w-1/4 text-lg md:flex flex-col space-y-5 text-gray-500 sticky top-10">
         <h3 className="cursor-pointer">Featured Items</h3>
         <h3 className="cursor-pointer">Breakfast</h3>
         <h3 className="cursor-pointer">Extras</h3>
         <h3 className="cursor-pointer">Salads</h3>
         <h3 className="cursor-pointer">Kid's Meals</h3>
-      </div>
-      <div className="w-full md:w-3/4 flex-col space-y-16">
+      </div>*/}
+      <div className="w-full md:p-10 md:w-3/4 flex-col space-y-16">
         <div className="flex flex-col space-y-8 px-5 md:px-0">
           <h3 className="text-2xl">Featured Items</h3>
 
           <div className="flex items-center flex-row  gap-5 overflow-x-auto">
             <div
-              onClick={() => setSelectedFood(1)}
+              onClick={() => setFood(1)}
               className="col-span-6 w-1/2 md:w-1/4"
             >
               <div className="min-h-40 border rounded-lg  flex flex-col items-center overflow-hidden">
@@ -337,7 +343,7 @@ export default function Page() {
             </div>
 
             <div
-              onClick={() => setSelectedFood(1)}
+              onClick={() => setFood(1)}
               className="col-span-6 w-1/2 md:w-1/4"
             >
               <div className="min-h-40 border rounded-lg  flex flex-col items-center overflow-hidden">
@@ -366,7 +372,7 @@ export default function Page() {
             </div>
 
             <div
-              onClick={() => setSelectedFood(1)}
+              onClick={() => setFood(1)}
               className="col-span-6 w-1/2 md:w-1/4"
             >
               <div className="min-h-40 border rounded-lg  flex flex-col items-center overflow-hidden">
@@ -395,7 +401,7 @@ export default function Page() {
             </div>
 
             <div
-              onClick={() => setSelectedFood(1)}
+              onClick={() => setFood(1)}
               className="col-span-6 w-1/2 md:w-1/4"
             >
               <div className="min-h-40 border rounded-lg  flex flex-col items-center overflow-hidden">
@@ -429,7 +435,7 @@ export default function Page() {
           <h3 className="text-2xl">Breakfast</h3>
 
           <div class="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-            <div onClick={() => setSelectedFood(1)} className="">
+            <div onClick={() => setFood(1)} className="">
               <div className="md:h-40 border-b md:border md:rounded-lg  flex items-center overflow-hidden">
                 <div className="flex-1 h-full p-5 flex flex-col space-y-2 overflow-hidden">
                   <h3 className="leading-loose text-sm md:text-lg">
@@ -467,7 +473,7 @@ export default function Page() {
                 </div>
               </div>
             </div>
-            <div onClick={() => setSelectedFood(1)} className="">
+            <div onClick={() => setFood(1)} className="">
               <div className="md:h-40  border-b md:border md:rounded-lg   flex items-center overflow-hidden">
                 <div className="flex-1 h-full p-5 flex flex-col space-y-2 overflow-hidden">
                   <h3 className="leading-loose text-sm md:text-lg">
@@ -505,7 +511,7 @@ export default function Page() {
                 </div>
               </div>
             </div>
-            <div onClick={() => setSelectedFood(1)} className="">
+            <div onClick={() => setFood(1)} className="">
               <div className="md:h-40  border-b md:border md:rounded-lg   flex items-center overflow-hidden">
                 <div className="flex-1 h-full p-5 flex flex-col space-y-2 overflow-hidden">
                   <h3 className="leading-loose text-sm md:text-lg">
@@ -547,8 +553,8 @@ export default function Page() {
         </div>
       </div>
 
-      {openAddToCart && <AddToCart close={() => setOpenAddToCart(false)} />}
-      {selectedFood && <FoodInfo close={() => setSelectedFood(null)} />}
+      {item && <AddToCart close={() => setItem(null)} item={item} />}
+      {food && <FoodInfo close={() => setFood(null)}  setAdd={addItem} food={food}/>}
 
       <Footer />
     </div>

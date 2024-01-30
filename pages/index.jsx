@@ -1,16 +1,24 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { HiChevronDown } from "react-icons/hi2";
-import { HiLocationMarker } from "react-icons/hi";
+// import { HiLocationMarker } from "react-icons/hi";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-
+import { useRouter } from "next/router";
+import CompletePlaces from "react-places-autocomplete";
+import Script from "next/script";
 
 export default function Landing() {
-  
+  const router = useRouter();
+  const [location, setLocation] = useState("");
   return (
     <div className="w-screen h-screen overflow-y-auto overflow-hidden bg-gray-50">
-      <Header title={"Eyepa  Delivery Services"} description={"Get all you item delivered by just a click away"} />
+      <Script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-a5Toku6TZnzEUwSSWHHkvGSkpMvwrMo&libraries=places&loading=async"></Script>
+
+      <Header
+        title={"Eyepa  Delivery Services"}
+        description={"Get all you item delivered by just a click away"}
+      />
 
       <div className="container mx-auto flex h-[70vh] overflow-hidden flex-col px-5 md:px-0 md:flex-row">
         <div className="flex flex-1 flex-col justify-center space-y-5  md:pr-10">
@@ -24,15 +32,59 @@ export default function Landing() {
           </div>
           <div className=" md:w-3/4 flex flex-col items-start space-y-10">
             <div className=" w-full p-3 bg-white rounded-md border border-gray-100 flex items-center space-x-2 px-3">
-              <HiLocationMarker size={20} color="gray" />
-              <input
-                type="text"
-                className="placeholder:text-gray-500 flex-1 py-3 md:py-2"
-                placeholder="Enter Location"
-              />
+         
+              {/* <CompletePlaces
+                value={location}
+                onChange={setLocation}
+                apiKey="AIzaSyA-a5Toku6TZnzEUwSSWHHkvGSkpMvwrMo"
+              >
+                {({
+                  getInputProps,
+                  suggestions,
+                  getSuggestionItemProps,
+                  loading,
+                }) => (
+                  <div>
+                    <input
+                      {...getInputProps({
+                        placeholder: "Search Find Address",
+                        className:
+                          "placeholder:text-gray-500 flex-1 py-3 md:py-2",
+                      })}
+                    />
+                    <div className="autocomplete-dropdown-container">
+                      {loading && <div>Loading...</div>}
+                      {suggestions.map((suggestion) => {
+                        const className = suggestion.active
+                          ? "bg-gray-100 p-2"
+                          : "border-b p-2";
+                        // inline style for demonstration purpose
+                        const style = suggestion.active
+                          ? { backgroundColor: "#fafafa", cursor: "pointer" }
+                          : { backgroundColor: "#ffffff", cursor: "pointer" };
+                        return (
+                          <div
+                            key={suggestion.index}
+                            {...getSuggestionItemProps(suggestion, {
+                              className,
+                              style,
+                            })}
+                          >
+                            <span>{suggestion.description}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </CompletePlaces> */}
             </div>
 
-            <button className="bg-yellow-500 px-8 py-3  text-white rounded-md font-medium mx-auto md:mx-0">
+            <button
+              disabled={!location}
+              onClick={() => router.push("/feeds")}
+              className="bg-yellow-500 px-8 py-3  text-white rounded-md font-medium mx-auto md:mx-0"
+            >
               Continue
             </button>
           </div>
@@ -186,8 +238,6 @@ export default function Landing() {
           </button>
         </div>
       </div>
-
-
 
       <Footer />
     </div>

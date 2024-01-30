@@ -15,16 +15,6 @@ export const getDocs = async ({ path, getter }) => {
   }
 };
 
-export const getWithHeader = async ({ path, getter, header }) => {
-  try {
-    const { data } = await axios.get(`${PROXY + path}`, {
-      headers: { ...header },
-    });
-    getter(data);
-  } catch (err) {
-    console.log(err);
-  }
-};
 
 export const sendDoc = async ({ path, data, feedback }) => {
   try {
