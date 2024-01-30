@@ -14,3 +14,12 @@ export const getDocs = async ({ path, getter }) => {
     console.log(err);
   }
 };
+
+export const sendDoc = async ({ path, data, feedback }) => {
+  try {
+    const { status } = await axios.post(`${PROXY + path}`, data);
+    feedback(status);
+  } catch (err) {
+    console.log(err);
+  }
+};
