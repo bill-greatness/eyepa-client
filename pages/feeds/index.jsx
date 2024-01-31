@@ -184,12 +184,12 @@ useEffect(() => {
 
   return (
     <div className="h-screen w-screen overflow-y-auto flex flex-col">
-      <div className="bg-red-400 py-3">
+      {router.query.payment_error && <div className="bg-red-400 py-3">
          <div className="container mx-auto flex items-center justify-center space-x-5">
           <HiXCircle color={'white'}/>
       <p className="text-sm font-medium"> Payement Failed : Your recent payment method failed. please try a different method.</p>
          </div>
-      </div>
+      </div>}
       <Header
         title={"Home - Eyepa Delivery Services"}
         description={"All your items delivered with Eyepa Services"}
