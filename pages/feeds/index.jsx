@@ -9,6 +9,8 @@ import SearchComponent from "../../components/SearchComponent";
 import { getDocs } from "../../functions/call";
 import AddToCart from "../../components/AddToCart";
 import FoodInfo from "../../components/FoodInfo";
+import {  toast } from 'react-toastify';
+import { HiXCircle } from "react-icons/hi";
 
 const randomImages = [
   "https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/FastFood.png",
@@ -88,6 +90,8 @@ const foodCategories = [
 
 export default function Foods() {
   const router = useRouter();
+  console.log(router.query);
+  
   const [food, setFood] = useState(null);
   const [country, setCountry] = useState("");
   const [item, setItem] = useState(null);
@@ -95,6 +99,19 @@ export default function Foods() {
   const [categories, setCategories] = useState([]);
   const [stores, setStores] = useState([]);
   const [category, setCategory] = useState("All");
+
+useEffect(() => {
+ if (router.query.payment_error) {
+  toast.error('🦄 Wow so easy!', {
+    position: "top-right",
+    autoClose: 5000,
+    closeOnClick: true,
+    draggable: true,
+
+    theme: "light",
+    });
+ }
+}, [router.query])
 
   useEffect(() => {
     if (typeof window !== undefined) {
@@ -167,6 +184,12 @@ export default function Foods() {
 
   return (
     <div className="h-screen w-screen overflow-y-auto flex flex-col">
+      {router.query.payment_error && <div className="bg-red-400 py-3">
+         <div className="container mx-auto flex items-center justify-center space-x-5">
+          <HiXCircle color={'white'}/>
+      <p className="text-sm font-medium"> Payement Failed : Your recent payment method failed. please try a different method.</p>
+         </div>
+      </div>}
       <Header
         title={"Home - Eyepa Delivery Services"}
         description={"All your items delivered with Eyepa Services"}
