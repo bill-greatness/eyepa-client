@@ -5,7 +5,7 @@ import { HiChevronDown } from "react-icons/hi2";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { useRouter } from "next/router";
-// import CompletePlaces from "react-places-autocomplete";
+import CompletePlaces from "react-places-autocomplete";
 import Script from "next/script";
 
 export default function Landing() {
@@ -13,7 +13,6 @@ export default function Landing() {
   const [location, setLocation] = useState("");
   return (
     <div className="w-screen h-screen overflow-y-auto overflow-hidden bg-gray-50">
-      <Script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-a5Toku6TZnzEUwSSWHHkvGSkpMvwrMo&libraries=places&loading=async"></Script>
 
       <Header
         title={"Eyepa  Delivery Services"}
@@ -30,13 +29,13 @@ export default function Landing() {
               The food you love, delivered fast
             </p>
           </div>
-          <div className=" md:w-3/4 flex flex-col items-start space-y-10">
-            <div className=" w-full p-3 bg-white rounded-md border border-gray-100 flex items-center space-x-2 px-3">
-         
-              {/* <CompletePlaces
+          <div className=" md:w-3/4 flex flex-col items-start space-y-10 relative">
+            <div className=" w-[90%] md:w-3/4 z-[5] p-3 bg-white absolute rounded-md border border-gray-100 flex items-center space-x-2 px-3">
+              <CompletePlaces
                 value={location}
                 onChange={setLocation}
                 apiKey="AIzaSyA-a5Toku6TZnzEUwSSWHHkvGSkpMvwrMo"
+                onSelect={(address, placeId) => {console.log(address);router.push('/feeds')}}
               >
                 {({
                   getInputProps,
@@ -44,12 +43,12 @@ export default function Landing() {
                   getSuggestionItemProps,
                   loading,
                 }) => (
-                  <div>
+                  <div className="flex flex-1 flex-col">
                     <input
                       {...getInputProps({
                         placeholder: "Search Find Address",
                         className:
-                          "placeholder:text-gray-500 flex-1 py-3 md:py-2",
+                          "placeholder:text-gray-500 flex-1 w-full py-3 md:py-2",
                       })}
                     />
                     <div className="autocomplete-dropdown-container">
@@ -77,16 +76,18 @@ export default function Landing() {
                     </div>
                   </div>
                 )}
-              </CompletePlaces> */}
+              </CompletePlaces>
             </div>
 
-            <button
-              disabled={!location}
-              onClick={() => router.push("/feeds")}
-              className="bg-yellow-500 px-8 py-3  text-white rounded-md font-medium mx-auto md:mx-0"
-            >
-              Continue
-            </button>
+            <div className="pt-14">
+              <button
+                disabled={!location}
+                onClick={() => router.push("/feeds")}
+                className="bg-yellow-500 px-8 py-3  text-white rounded-md font-medium mx-auto md:mx-0"
+              >
+                Continue
+              </button>
+            </div>
           </div>
         </div>
         <div className="flex flex-1  overflow-hidden">

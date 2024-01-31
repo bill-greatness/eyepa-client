@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { HiUserCircle, HiX } from "react-icons/hi";
 import Head from "next/head";
 import Script from "next/script";
+import { useAuthContext } from "../context/Authentication";
 
 export default function Header({ title, description }) {
   const router = useRouter();
@@ -17,6 +18,9 @@ export default function Header({ title, description }) {
   const [showMenue, setShowMenue] = useState(false);
 
   const [showInfoModal, setShowInfoModal] = useState(false);
+
+
+  const {auth} = useAuthContext()
 
   return (
     <header className="py-3 sticky top-0 z-50 bg-white">
@@ -26,6 +30,8 @@ export default function Header({ title, description }) {
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <meta content={description} name="description" />
       </Head>
+
+     
       <div className="flex items-center justify-between container mx-auto px-5 md:px-0">
         <div className="cursor-pointer" onClick={() => router.push("/landing")}>
           <Image
@@ -52,21 +58,23 @@ export default function Header({ title, description }) {
           <button className="hidden md:flex">
             <p className="font-medium text-gray-700">Support</p>
           </button>
-          {/* show when not authenticated */}
+          {
+            !auth.isAuthenticated ? 
+   
           <button
             onClick={() => router.push("/auth")}
             className="bg-gray-800 text-white text-sm px-4 py-2 rounded-full hidden md:flex"
           >
             <p>Sign up</p>
-          </button>
-          {/* show when authenticated */}
+          </button>:
+   
           <button
-            onMouseOver={() => setShowInfoModal(true)}
             className="hidden md:flex"
-            onClick={() => setShowMenue(true)}
+            onClick={() => setShowInfoModal(true)}
           >
             <HiUserCircle size={40} />
           </button>
+          }
           <button onClick={() => setShowMenue(true)}>
             <FaBars size={20} color="black" />
           </button>
@@ -74,8 +82,10 @@ export default function Header({ title, description }) {
       </div>
       <div className="flex items-center justify-between container mx-auto"></div>
 
+
+
       {showInfoModal && (
-        <div className="absolute md:flex top-0 -left-10 right-0 bottom-0 z-10 bg-black/20 hidden">
+        <div className="absolute md:flex top-0 left-0  w-screen h-screen z-10 bg-black/20 hidden">
           <div
             onClick={() => setShowInfoModal(false)}
             className="flex-1 relative container mx-auto"
@@ -104,7 +114,7 @@ export default function Header({ title, description }) {
       )}
 
       {showMenue && (
-        <div className="absolute flex top-0 -left-10 right-0 bottom-0 z-10 bg-black/20">
+        <div className="absolute flex top-0 left-0  w-screen h-screen z-10 bg-black/20">
           <div onClick={() => setShowMenue(false)} className="flex-1 relative">
             {/* cart modal */}
             <div
@@ -121,6 +131,7 @@ export default function Header({ title, description }) {
               </button>
               <div className="flex flex-col space-y-10 p-3">
                 {/* show when logged in */}
+                {auth.isAuthenticated ? 
                 <div className="flex flex-col space-y-4 text-gray-700 text-sm font-medium">
                   <div className="flex items-center space-x-3 cursor-pointer">
                     <HiUserCircle size={60} />
@@ -157,7 +168,8 @@ export default function Header({ title, description }) {
                       Sign out
                     </button>
                   </div>
-                </div>
+                </div>:
+                <> 
                 {/* hide when authenticated and show when not  */}
                 <div className="flex flex-col space-y-2">
                   <button
@@ -179,6 +191,8 @@ export default function Header({ title, description }) {
                   <p className="cursor-pointer">Add your restaurant</p>
                   <p className="cursor-pointer">Sign up to deliver</p>
                 </div>
+                </>
+              }
               </div>
               <div className="flex flex-1"></div>
               <div className="flex flex-col space-y-8 px-5">

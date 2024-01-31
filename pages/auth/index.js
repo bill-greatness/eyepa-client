@@ -12,7 +12,7 @@ export default function Login() {
 
   return (
     <div className="w-screen h-screen flex flex-col bg-white overflow-x-auto">
-      <div className="bg-black">
+      <div className="bg-white">
         <div className="flex items-center justify-between container mx-auto px-5 md:px-0">
           <div
             className="cursor-pointer"
