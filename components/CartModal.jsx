@@ -1,10 +1,40 @@
 import React, { useState } from 'react'
 import { HiLocationMarker, HiShoppingCart, HiX } from 'react-icons/hi';
 import { useCartContext } from '../context/Cart';
+import getStripe from '../pages/utils/get-stripe';
 
 export default function CartModal({ close }) {
 
-const {cart} = useCartContext()
+    const { cart } = useCartContext()
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        try {
+            const response = await fetch('/api/checkout_session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ cart }), 
+            });
+
+            const session = await response.json();
+
+            if (response.ok) {
+                const stripe = await getStripe();
+                stripe.redirectToCheckout({ sessionId: session.id });
+            } else {
+                console.error(session.message); // Handle errors here
+                setIsLoading(false);
+            }
+        } catch (error) {
+            console.error(error.message);
+            setIsLoading(false);
+        }
+    };
 
     return (
         <div className='absolute flex top-0 -left-10 right-0 bottom-0 z-10'>
@@ -39,7 +69,7 @@ const {cart} = useCartContext()
                                                 setCart(prev => {
                                                     return prev.map((item, idx) => {
                                                         if (idx === index) {
-                                                            return { ...item, quantity: newQuantity,price:parseFloat(product.price)*newQuantity };
+                                                            return { ...item, quantity: newQuantity, price: parseFloat(product.price) * newQuantity };
                                                         }
                                                         return item;
                                                     });
@@ -69,7 +99,7 @@ const {cart} = useCartContext()
                                 <p>Service Fees :</p>
                                 <p>$1.00</p>
                             </div>
-                            <button className='bg-black p-3 rounded text-white font-medium'>
+                            <button disabled={isLoading} onClick={handleSubmit} className='bg-black p-3 rounded text-white font-medium'>
                                 Checkout $200.00
                             </button>
                         </div>

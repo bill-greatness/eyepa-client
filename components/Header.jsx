@@ -26,7 +26,7 @@ export default function Header({ title, description }) {
     <header className="py-3 sticky top-0 z-10 backdrop-blur-sm">
      
       <div className="flex items-center justify-between container mx-auto px-5 md:px-0">
-        <div className="cursor-pointer" onClick={() => router.push("/landing")}>
+        <div className="cursor-pointer" onClick={() => router.push("/")}>
           <Image
             className="rounded-xl"
             src="/assets/logo.png"

@@ -12,17 +12,17 @@ export default function Login() {
 
   return (
     <div className="w-screen h-screen flex flex-col bg-white overflow-x-auto">
-      <div className="bg-white">
+      <div className="bg-white border-b py-3">
         <div className="flex items-center justify-between container mx-auto px-5 md:px-0">
           <div
             className="cursor-pointer"
-            onClick={() => router.push("/landing")}
+            onClick={() => router.push("/")}
           >
             <Image
               className="rounded-xl"
               src="/assets/logo.png"
-              width={70}
-              height={70}
+              width={80}
+              height={80}
               alt="logo"
             />
             {/* <h3 className="font-bold text-gray-600 text-xl">Eyepa Meal.</h3> */}

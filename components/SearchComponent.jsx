@@ -4,8 +4,10 @@ import { LuSearch, LuShoppingCart } from "react-icons/lu";
 import CartModal from "./CartModal";
 import ChangeLocationModal from "./ChangeLocationModal";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
+import { useRouter } from "next/router";
 
 export default function SearchComponent() {
+  const router = useRouter();
   const [showChartModal, setShowChartModal] = useState(false);
   const [showChangeLocationModal, setShowChangeLocationModal] = useState(false);
   const [location, setLocation] = useState({});
@@ -27,6 +29,8 @@ export default function SearchComponent() {
       })
       .catch((error) => console.error("Error", error));
   };
+
+  const [searchTerm, setSearchTerm] = useState('')
 
   return (
     <div className="border-b pb-3 px-5 md:px-0">
@@ -61,6 +65,13 @@ export default function SearchComponent() {
         <div className="bg-gray-100 p-5 w-full md:w-[50vw] rounded-md flex items-center space-x-5">
           <LuSearch size={18} color={"gray"} />
           <input
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter') {
+                router.push(`/feeds/q/${searchTerm}`)
+              }
+            }}
             type="text"
             className="bg-transparent flex-1"
             placeholder="Search Food and Restaurants"
