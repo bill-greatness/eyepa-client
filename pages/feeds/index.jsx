@@ -173,7 +173,7 @@ export default function Foods() {
       />
       <SearchComponent />
 
-      <div className="flex-1 flex flex-col space-y-10">
+      {stores.length > 0 && <div className="flex-1 flex flex-col space-y-10">
         <div className="container mx-auto flex items-center py-10 space-x-10 overflow-hidden overflow-x-auto relative">
           <button className="hidden md:flex bg-gray-100 p-2 rounded-full bg-opacity-80 backdrop-blur-sm left-0 sticky">
             <HiArrowLeft size={18} />
@@ -282,12 +282,16 @@ export default function Foods() {
             </button>
           </div>
         </div>
+      </div>}
+
+      <div className="flex-1 flex flex-col space-y-1 items-center justify-center w-3/4 md:w-1/3 mx-auto text-center py-10">
+              <img className="h-36" src="./assets/oos.png" />
+              <h3 className="font-bold text-xl">We're coming soon</h3>
+              <p className="text-sm font-light text-gray-400">We are always expanding our coverage area. Please check back in the future.</p>
       </div>
 
       {item && <AddToCart close={() => setItem(null)} item={item} />}
-      {food && (
-        <FoodInfo food={food} close={() => setFood(null)} setAdd={addItem} />
-      )}
+      {food && <FoodInfo food={food} close={() => setFood(null)} setAdd={addItem} />}
 
       <Footer />
     </div>

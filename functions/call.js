@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const PROXY =
-  process.env.NODE_ENV === "development"
+  process.env.NODE_ENV !== "development"
     ? "http://localhost:4000"
     : "https://eyepa-server.onrender.com";
 
