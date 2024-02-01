@@ -121,10 +121,25 @@ export default function Page() {
     setFood(null);
   };
 
+  const groupFoods = () => {
+    const grouped = _.groupBy(foods, fd => fd.category)
+    let results = []
+    Object.entries(grouped).forEach(([key, value]) => {
+      results.push({
+        category:key, 
+        data:value
+      })
+    })
+
+    return results
+  }
 
   return (
     <div className="w-screen h-screen bg-white overflow-hidden overflow-y-auto">
-      <Header title={store?.name + '-Eyepa Delivery'} description={`Browse ${store?.name} foods on Eyepa Delivery`}/>
+      <Header
+        title={store?.name + "-Eyepa Delivery"}
+        description={`Browse ${store?.name} foods on Eyepa Delivery`}
+      />
       <SearchComponent />
 
       <div className="h-60 bg-gray-500 flex relative overflow-hidden">
@@ -153,7 +168,7 @@ export default function Page() {
             <div className="flex items-center font-medium text-sm">
               <p>4.8</p> <MdStar />
             </div>
-            <p className="text-sm text-gray-400 font-light">{"(10+)"}</p>
+            <p className="text-sm text-gray-400 font-light">{`(${foods?.length})+ Foods`}</p>
             <p className="font-light text-gray-600">{store?.fullAddress}</p>
           </div>
           <p className="text-xs text-gray-500 leading-relaxed pt-3 font-light">
@@ -190,14 +205,14 @@ export default function Page() {
         </div>
       </div>
 
-      {openSimilar &&
-        similar?.map((fd, index) => (
+      {
+        groupFoods()?.map((fd, index) => (
           <div
             key={`feed-list-${index}`}
             className="flex flex-col container mx-auto border-b space-y-5 pb-5 px-5 md:px-0"
           >
             <div className="flex items-center justify-between ">
-              <h3 className="text-2xl font-medium">{fd.title}</h3>
+              <h3 className="text-2xl font-medium">{fd.category}</h3>
               <div className="hidden md:flex items-center space-x-8">
                 <button>See all</button>
                 <div className="flex items-center space-x-3">
@@ -215,17 +230,17 @@ export default function Page() {
             </div>
 
             <div className="flex flex-row items-center space-x-5 overflow-hidden overflow-x-auto">
-              {foods?.map((fd, idx) => (
+              {fd.data?.map((fdx, idx) => (
                 <div
-                  onClick={() => setFood(fd)}
+                  onClick={() => setFood(fdx)}
                   key={`store-${idx}`}
                   className="w-2/3 md:w-1/4 flex flex-col space-y-3 cursor-pointer shrink-0"
                 >
                   <div className="w-full flex bg-gray-300 h-40 rounded-xl relative overflow-hidden">
                     <img
-                      alt={`${fd?.photo}_banner`}
+                      alt={`${fdx?.photo}_banner`}
                       className="flex-1 object-cover"
-                      src={fd?.photo}
+                      src={fdx?.photo}
                     />
 
                     <button className="absolute top-4 right-4">
@@ -234,7 +249,7 @@ export default function Page() {
                   </div>
                   <div className="flex flex-row items-start justify-between">
                     <div className="flex flex-col space-y-1">
-                      <h3 className="font-medium">{fd?.name}</h3>
+                      <h3 className="font-medium">{fdx?.name}</h3>
                       <p className="font-light text-gray-600"> 20–40 min</p>
                     </div>
                     <div className="h-8 w-8 bg-gray-100 rounded-full items-center justify-center flex text-xs">
@@ -272,8 +287,6 @@ export default function Page() {
         </div>
       </div>
 
- 
-
       <div className="flex flex-row items-center space-x-5 overflow-hidden overflow-x-auto">
         {comments.map((comment, index) => (
           <div
@@ -301,133 +314,49 @@ export default function Page() {
       </div>
 
       <div className="flex items-start md:space-x-3 container mx-auto"></div>
-  {/*    <div className="hidden w-1/4 text-lg md:flex flex-col space-y-5 text-gray-500 sticky top-10">
+      {/*    <div className="hidden w-1/4 text-lg md:flex flex-col space-y-5 text-gray-500 sticky top-10">
         <h3 className="cursor-pointer">Featured Items</h3>
         <h3 className="cursor-pointer">Breakfast</h3>
         <h3 className="cursor-pointer">Extras</h3>
         <h3 className="cursor-pointer">Salads</h3>
         <h3 className="cursor-pointer">Kid's Meals</h3>
-      </div>*/}
+      </div>
       <div className="w-full md:p-10 md:w-3/4 flex-col space-y-16">
         <div className="flex flex-col space-y-8 px-5 md:px-0">
           <h3 className="text-2xl">Featured Items</h3>
 
           <div className="flex items-center flex-row  gap-5 overflow-x-auto">
-            <div
-              onClick={() => setFood(1)}
-              className="col-span-6 w-1/2 md:w-1/4"
-            >
-              <div className="min-h-40 border rounded-lg  flex flex-col items-center overflow-hidden">
-                <div className="h-40 flex bg-gray-100 w-40 relative overflow-hidden">
-                  <img
-                    className="flex-1 object-cover"
-                    src="https://tb-static.uber.com/prod/image-proc/processed_images/85c9bdbd7500311ecf28d8c648c941e6/a19bb09692310dfd41e49a96c424b3a6.jpeg"
-                  />
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setOpenAddToCart(true);
-                    }}
-                    className="bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2"
-                  >
-                    <IoAdd size={30} />
-                  </button>
+            {[1, 2, 3, 4].map((info, idx) => (
+              <div
+                key={idx}
+                onClick={() => setFood(1)}
+                className="col-span-6 w-1/2 md:w-1/4"
+              >
+                <div className="min-h-40 border rounded-lg  flex flex-col items-center overflow-hidden">
+                  <div className="h-40 flex bg-gray-100 w-40 relative overflow-hidden">
+                    <img
+                      className="flex-1 object-cover"
+                      src="https://tb-static.uber.com/prod/image-proc/processed_images/85c9bdbd7500311ecf28d8c648c941e6/a19bb09692310dfd41e49a96c424b3a6.jpeg"
+                    />
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setOpenAddToCart(true);
+                      }}
+                      className="bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2"
+                    >
+                      <IoAdd size={30} />
+                    </button>
+                  </div>
+                </div>
+                <div className="py-2 flex flex-col space-y-1">
+                  <h3 className="text-[15px] fonty-medium">
+                    Chick-fil-A Chick-n-Mini
+                  </h3>
+                  <p className="text-sm font-light">$13.85</p>
                 </div>
               </div>
-              <div className="py-2 flex flex-col space-y-1">
-                <h3 className="text-[15px] fonty-medium">
-                  Chick-fil-A Chick-n-Mini
-                </h3>
-                <p className="text-sm font-light">$13.85</p>
-              </div>
-            </div>
-
-            <div
-              onClick={() => setFood(1)}
-              className="col-span-6 w-1/2 md:w-1/4"
-            >
-              <div className="min-h-40 border rounded-lg  flex flex-col items-center overflow-hidden">
-                <div className="h-40 flex bg-gray-100 w-40 relative overflow-hidden">
-                  <img
-                    className="flex-1 object-cover"
-                    src="https://tb-static.uber.com/prod/image-proc/processed_images/832c4dd1ff6d9232d9fcc97ac4468b0c/a19bb09692310dfd41e49a96c424b3a6.jpeg"
-                  />
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setOpenAddToCart(true);
-                    }}
-                    className="bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2"
-                  >
-                    <IoAdd size={30} />
-                  </button>
-                </div>
-              </div>
-              <div className="py-2 flex flex-col space-y-1">
-                <h3 className="text-[15px] fonty-medium">
-                  Chick-fil-A Chick-n-Mini
-                </h3>
-                <p className="text-sm font-light">$13.85</p>
-              </div>
-            </div>
-
-            <div
-              onClick={() => setFood(1)}
-              className="col-span-6 w-1/2 md:w-1/4"
-            >
-              <div className="min-h-40 border rounded-lg  flex flex-col items-center overflow-hidden">
-                <div className="h-40 flex bg-gray-100 w-40 relative overflow-hidden">
-                  <img
-                    className="flex-1 object-cover"
-                    src="https://tb-static.uber.com/prod/image-proc/processed_images/1091072bb299f23f63aa64884cbaade7/5954bcb006b10dbfd0bc160f6370faf3.jpeg"
-                  />
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setOpenAddToCart(true);
-                    }}
-                    className="bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2"
-                  >
-                    <IoAdd size={30} />
-                  </button>
-                </div>
-              </div>
-              <div className="py-2 flex flex-col space-y-1">
-                <h3 className="text-[15px] fonty-medium">
-                  Chick-fil-A Chick-n-Mini
-                </h3>
-                <p className="text-sm font-light">$13.85</p>
-              </div>
-            </div>
-
-            <div
-              onClick={() => setFood(1)}
-              className="col-span-6 w-1/2 md:w-1/4"
-            >
-              <div className="min-h-40 border rounded-lg  flex flex-col items-center overflow-hidden">
-                <div className="h-40 flex bg-gray-100 w-40 relative overflow-hidden">
-                  <img
-                    className="flex-1 object-cover"
-                    src="https://tb-static.uber.com/prod/image-proc/processed_images/79653b5f2987abe098e60af493c80381/5954bcb006b10dbfd0bc160f6370faf3.jpeg"
-                  />
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setOpenAddToCart(true);
-                    }}
-                    className="bg-white p-2 rounded-full absolute bottom-2 shadow-sm border-gray-100 right-2"
-                  >
-                    <IoAdd size={30} />
-                  </button>
-                </div>
-              </div>
-              <div className="py-2 flex flex-col space-y-1">
-                <h3 className="text-[15px] fonty-medium">
-                  Chick-fil-A Chick-n-Mini
-                </h3>
-                <p className="text-sm font-light">$13.85</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
@@ -552,9 +481,12 @@ export default function Page() {
           </div>
         </div>
       </div>
+      */}
 
       {item && <AddToCart close={() => setItem(null)} item={item} />}
-      {food && <FoodInfo close={() => setFood(null)}  setAdd={addItem} food={food}/>}
+      {food && (
+        <FoodInfo close={() => setFood(null)} setAdd={addItem} food={food} />
+      )}
 
       <Footer />
     </div>

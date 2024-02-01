@@ -1,6 +1,29 @@
 import React from "react";
+import { updateDoc } from "../functions/call";
+import { useAuthContext } from "../context/Authentication";
+import { useRouter } from "next/router";
 
 export default function FoodInfo({ close, food, setAdd }) {
+  const { auth } = useAuthContext();
+  const router = useRouter();
+
+  const addToFavorites = async () => {
+    try {
+      if (!auth.isAuthenticated) {
+        router.push("/auth");
+        return;
+      } else {
+        const { status } = await updateDoc({
+          path: "/user/favs/add?type=favorites",
+          data: { type: "food", ...food },
+        });
+
+        close();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div
       onClick={close}
@@ -22,12 +45,18 @@ export default function FoodInfo({ close, food, setAdd }) {
           </p>
           <p className="text-sm font-medium">${food?.price}</p>
 
-          <div className="pt-5">
+          <div className="pt-5 flex items-center gap-2">
             <button
               onClick={() => setAdd(food)}
               className="border text-sm font-medium border-yellow-400 bg-yellow-400 w-full p-4 rounded-md"
             >
-              View
+              Make Order
+            </button>
+            <button
+              onClick={() => addToFavorites()}
+              className="border text-sm font-medium border-yellow-400 bg-yellow-400 w-full p-4 rounded-md"
+            >
+              Add to Favorites
             </button>
           </div>
         </div>

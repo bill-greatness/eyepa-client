@@ -1,12 +1,20 @@
 import _ from "lodash";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiX } from "react-icons/hi";
 import { HiMinusCircle, HiPlusCircle } from "react-icons/hi2";
+import { Spin } from "./Feedback";
+import { updateDoc } from "../functions/call";
 
 export default function AddToCart({ close, item }) {
   const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [addons, setAddons] = useState([]);
   const [totalPrice, setTotalPrice] = useState(item?.price);
+
+  useEffect(() => {
+    const price = _.sumBy(addons, (ad) => parseFloat(ad.price));
+    setTotalPrice(price);
+  }, [addons]);
 
   const addAddon = (info, opp) => {
     // find if addon is already added.
@@ -19,13 +27,10 @@ export default function AddToCart({ close, item }) {
         {
           description: info.description,
           quantity: 1,
-          price: parseFloat(info.price).toFixed(2),
+          price: parseFloat(info.price),
         },
       ]);
 
-      let addonPrice = _.sumBy(addons, (ad) => ad.price);
-
-      setTotalPrice(parseFloat(addonPrice + item?.price));
       return;
     }
 
@@ -50,12 +55,9 @@ export default function AddToCart({ close, item }) {
       temp[temp.indexOf(exists)] = {
         description: info.description,
         quantity,
-        price: parseFloat(info.price * quantity).toFixed(2),
+        price: parseFloat(info.price) * quantity,
       };
 
-      let addonPrice = _.sumBy(temp, (ad) => ad.price);
-
-      setTotalPrice((prev) => parseFloat(addonPrice + item?.price));
       setAddons(temp);
 
       return;
@@ -64,6 +66,38 @@ export default function AddToCart({ close, item }) {
 
   const findItem = (desc) => {
     return _.find(addons, (adn) => adn.description === desc);
+  };
+
+  const addToCart = async () => {
+    setLoading(true);
+    const orderDetails = {
+      userID: localStorage.getItem("userID"),
+      storeID: item?.storeID,
+      country: item?.country,
+      quantity,
+      orderType: "Delivery",
+      items: [
+        {
+          ...item,
+          addons,
+        },
+      ],
+    };
+
+    const { status } = await updateDoc({
+      path: "/user/favs/add?type=cart",
+      data: orderDetails,
+    });
+
+    if (status === 200) {
+      alert("Successfully Added to cart");
+      // continue be closing modal
+      close()
+    }
+
+    setLoading(false)
+
+    // console.log(orderDetails);
   };
   const count = findItem;
 
@@ -83,7 +117,7 @@ export default function AddToCart({ close, item }) {
           <p className="text-sm font-medium">${item?.price}</p>
 
           <div className="pt-5 flex flex-1 overflow-hidden">
-            <div className="flex-1 pt-10 flex overflow-hidden">
+            <div className="flex-1 pt-10 flex overflow-hidden rounded-md">
               <img className="flex-1 object-cover" src={item?.photo} />
             </div>
           </div>
@@ -121,7 +155,12 @@ export default function AddToCart({ close, item }) {
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium">{info?.description}</p>
                     <p className="text-sm font-light">
-                      ${count(info?.description)?.price || info?.price}
+                      $
+                      {(count(info?.description)?.price &&
+                        parseFloat(count(info?.description)?.price).toFixed(
+                          2
+                        )) ||
+                        info?.price}
                     </p>
                   </div>
                   <div className="flex items-center space-x-3">
@@ -148,7 +187,7 @@ export default function AddToCart({ close, item }) {
             <div>
               <select
                 value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
+                onChange={(e) => setQuantity(parseInt(e.target.value))}
                 className="bg-gray-100 rounded-full px-2 py-1"
               >
                 <option value={1}>1</option>
@@ -160,9 +199,21 @@ export default function AddToCart({ close, item }) {
               </select>
             </div>
 
-            <button className="bg-black text-white font-medium p-4 rounded-md">
-              Add {quantity} to cart ({totalPrice})
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={addToCart}
+                className="bg-black text-white font-medium flex-1 p-4 rounded-md"
+              >
+                {(loading && <Spin />) ||
+                  `Add ${quantity} to cart (${parseFloat(totalPrice + item?.price).toFixed(2)})`}
+              </button>
+              <button
+                onClick={close}
+                className="bg-red-500 text-white font-medium p-4 rounded-md"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ export default function Landing() {
     return (
         <div className="w-screen h-screen overflow-y-auto overflow-hidden bg-gray-50">
 
-            <Header />
+            <Header title={"Eyepa Delivery"} description={"Get all your items delivered with just a click"}/>
 
             <div className='container mx-auto flex h-[70vh] overflow-hidden flex-col px-5 md:px-0 md:flex-row'>
 

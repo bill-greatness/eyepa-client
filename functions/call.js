@@ -15,12 +15,37 @@ export const getDocs = async ({ path, getter }) => {
   }
 };
 
+export const getDoc = async ({ path }) => {
+  return axios.get(`${PROXY + path}`, {
+    headers: {
+      userid: localStorage.getItem("userID"),
+    },
+  });
+};
+
+export const getWithHeaders = async ({ path, getter }) => {
+  const { data } = await axios.get(`${PROXY + path}`, {
+    headers: {
+      userid: localStorage.getItem("userID"),
+    },
+  });
+
+  getter(data);
+};
 
 export const sendDoc = async ({ path, data, feedback }) => {
   try {
-    const { status } = await axios.post(`${PROXY + path}`, data);
+    const { status } = await axios.post(`${PROXY + path}`, data, {
+      headers: { userid: localStorage.getItem("userID") },
+    });
     feedback(status);
   } catch (err) {
     console.log(err);
   }
+};
+
+export const updateDoc = async ({ path, data }) => {
+  return await axios.patch(`${PROXY + path}`, data, {
+    headers: { userid: localStorage.getItem("userID") },
+  });
 };

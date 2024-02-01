@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiLocationMarker, HiShoppingCart, HiX } from "react-icons/hi";
 import { LuSearch, LuShoppingCart } from "react-icons/lu";
 import CartModal from "./CartModal";
@@ -6,11 +6,24 @@ import ChangeLocationModal from "./ChangeLocationModal";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import { useRouter } from "next/router";
 
-export default function SearchComponent() {
+export default function SearchComponent({ user }) {
   const router = useRouter();
   const [showChartModal, setShowChartModal] = useState(false);
   const [showChangeLocationModal, setShowChangeLocationModal] = useState(false);
   const [location, setLocation] = useState({});
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((info) => {
+        const { latitude, longitude } = info?.coords;
+        setLocation((prev) => ({
+          coordinates: [latitude, longitude],
+          fullAddress: localStorage.getItem("address"),
+          country: localStorage.getItem("country"),
+        }));
+      });
+    }
+  }, [user]);
 
   const setAddress = (address) => {
     geocodeByAddress(address)
@@ -26,11 +39,12 @@ export default function SearchComponent() {
           "country",
           address.split(",")[address.split(",").length - 1]
         );
+        localStorage.setItem("address", address);
       })
       .catch((error) => console.error("Error", error));
   };
 
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState("");
 
   return (
     <div className="border-b pb-3 px-5 md:px-0">
@@ -56,7 +70,7 @@ export default function SearchComponent() {
               <LuShoppingCart size={20} />
               <p>Cart</p>
               <div className="text-xs text-white bg-yellow-500 absolute -top-3 rounded-full border h-5 w-5 right-0">
-                3
+                {user.cart?.length}
               </div>
             </button>
           </div>
@@ -66,10 +80,10 @@ export default function SearchComponent() {
           <LuSearch size={18} color={"gray"} />
           <input
             value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-            onKeyDown={e => {
-              if (e.key === 'Enter') {
-                router.push(`/feeds/q/${searchTerm}`)
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                router.push(`/feeds/q/${searchTerm}`);
               }
             }}
             type="text"
@@ -85,7 +99,7 @@ export default function SearchComponent() {
             <LuShoppingCart size={20} />
             <p>Cart</p>
             <div className="text-xs text-white bg-yellow-500 absolute -top-3 rounded-full border h-5 w-5 right-0">
-              3
+              {user.cart?.length}
             </div>
           </button>
         </div>
@@ -97,7 +111,13 @@ export default function SearchComponent() {
           />
         )}
 
-        {showChartModal && <CartModal close={() => setShowChartModal(false)} />}
+        {showChartModal && (
+          <CartModal
+            close={() => setShowChartModal(false)}
+            info={user}
+            location={location}
+          />
+        )}
       </div>
     </div>
   );

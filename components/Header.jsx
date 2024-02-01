@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   IoLogoAndroid,
@@ -7,26 +7,35 @@ import {
   IoNotificationsSharp,
 } from "react-icons/io5";
 import { PiBowlFoodDuotone } from "react-icons/pi";
-import { FaAndroid, FaBars } from "react-icons/fa6";
+import { FaBars } from "react-icons/fa6";
 import { useRouter } from "next/router";
 import { HiUserCircle, HiX } from "react-icons/hi";
 import Head from "next/head";
 import Script from "next/script";
-import { GiMoneyStack } from "react-icons/gi";
 import { useAuthContext } from "../context/Authentication";
+import { getWithHeaders } from "../functions/call";
+import Link from "next/link";
 
 export default function Header({ title, description }) {
   const router = useRouter();
 
   const [showMenue, setShowMenue] = useState(false);
+  const [notes, setNotes] = useState([]);
 
   const [showInfoModal, setShowInfoModal] = useState(false);
 
   const [showNotifications, setShowNotifications] = useState(false);
 
-  const { auth } = useAuthContext();
+  const { auth, setAuth } = useAuthContext();
 
+  useEffect(() => {
+    getWithHeaders({
+      path: `/user/alerts/${auth.userInfo?.uid || auth.userInfo?._id}`,
+      getter: setNotes,
+    });
+  }, [auth]);
 
+  // console.log(notes);
 
   return (
     <header className="py-3 sticky top-0 z-10 backdrop-blur-sm">
@@ -58,7 +67,7 @@ export default function Header({ title, description }) {
             </div>
             <IoTriangleSharp size={10} color="gray" className="rotate-180" />
           </button>
-          {!auth.isAuthenticated && (
+          {auth.isAuthenticated && (
             <button
               onClick={() => setShowNotifications(true)}
               className="bg-gray-100 p-2 rounded-full flex"
@@ -113,46 +122,29 @@ export default function Header({ title, description }) {
                 </button>
               </div>
               <div className="flex flex-col flex-1 p-5 space-y-5">
-                <div
-                  onClick={() => router.push("/orders/4")}
-                  className=" cursor-pointer flex flex-row  space-x-3 border-b border-gray-100 pb-5"
-                >
-                  <div className="h-10 shrink-0 w-10 flex items-center justify-center border rounded-full">
-                    <PiBowlFoodDuotone color="green" />
+                {notes?.map((info) => (
+                  <div
+                    key={info._id}
+                    onClick={() => router.push("/orders/4")}
+                    className=" cursor-pointer flex flex-row  space-x-3 border-b border-gray-100 pb-5"
+                  >
+                    <div className="h-10 shrink-0 w-10 flex items-center justify-center border rounded-full">
+                      <PiBowlFoodDuotone color="green" />
+                    </div>
+                    <div className="flex flex-col space-y-1">
+                      <h3 className="text-sm font-medium text-gray-600">
+                        Order #778748
+                      </h3>
+                      <p className="text-sm font-light text-gray-600">
+                        Your order #778748 has been is beign prepared. and will
+                        be ready for pickup in 10 mins time.
+                      </p>
+                      <p className="text-xs text-yellow-600 font-medium">
+                        Just now
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex flex-col space-y-1">
-                    <h3 className="text-sm font-medium text-gray-600">
-                      Order #778748
-                    </h3>
-                    <p className="text-sm font-light text-gray-600">
-                      Your order #778748 has been is beign prepared. and will be
-                      ready for pickup in 10 mins time.
-                    </p>
-                    <p className="text-xs text-yellow-600 font-medium">
-                      Just now
-                    </p>
-                  </div>
-                </div>
-                <div
-                  onClick={() => router.push("/orders/4")}
-                  className=" cursor-pointer flex flex-row  space-x-3  pb-5"
-                >
-                  <div className="h-10 shrink-0 w-10 flex items-center justify-center border rounded-full">
-                    <GiMoneyStack color="green" />
-                  </div>
-                  <div className="flex flex-col space-y-1">
-                    <h3 className="text-sm font-medium text-gray-600">
-                      Order #778748
-                    </h3>
-                    <p className="text-sm font-light text-gray-600">
-                      Your order #778748 has been created successfully and
-                      awaiting confirmation.
-                    </p>
-                    <p className="text-xs text-yellow-600 font-medium">
-                      Just now
-                    </p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
@@ -170,14 +162,18 @@ export default function Header({ title, description }) {
                 <HiUserCircle size={60} />
                 <div>
                   <p className="font-medium text-lg text-center">
-                    James Bieber Hatsso
+                    {auth.userInfo?.name || auth.userInfo?.displayName}
                   </p>
                   <p className="font-light text-xs hover:text-green-500 text-center">
                     Customer Account
                   </p>
                 </div>
                 <button
-                  onClick={() => router.push("/auth")}
+                  onClick={() => {
+                    localStorage.clear();
+                    setAuth({ isAuthenticated: false, userInfo: {} });
+                    router.push("/");
+                  }}
                   className="w-full text-red-500 font-semibold rounded-md"
                 >
                   Sign out
@@ -211,7 +207,9 @@ export default function Header({ title, description }) {
                     <div className="flex items-center space-x-3 cursor-pointer">
                       <HiUserCircle size={60} />
                       <div>
-                        <p className="font-medium text-lg">Account Holder</p>
+                        <p className="font-medium text-lg">
+                          {auth.userInfo?.displayName || auth.userInfo?.name}
+                        </p>
                         <p className="font-light text-xs hover:text-green-500">
                           Customer Account
                         </p>
@@ -237,7 +235,11 @@ export default function Header({ title, description }) {
                     </p>
                     <div className="py-5">
                       <button
-                        onClick={() => router.push("/auth")}
+                        onClick={() => {
+                          localStorage.clear();
+                          setAuth({ isAuthenticated: false, userInfo: {} });
+                          router.push("/");
+                        }}
                         className="w-full bg-red-500 py-4 font-semibold text-white rounded-md"
                       >
                         Sign out
@@ -263,10 +265,22 @@ export default function Header({ title, description }) {
                     </div>
                     {/* hide when authenticated and show when not  */}
                     <div className="flex flex-col space-y-4 text-gray-700 text-sm font-medium">
-                      <p className="cursor-pointer">
-                        Create a business account
-                      </p>
-                      <p className="cursor-pointer">Add your restaurant</p>
+                      <Link
+                        target="_blank"
+                        href={"https://stores.eyepadelivery.com/signup"}
+                      >
+                        <p className="cursor-pointer">
+                          Create a business account
+                        </p>
+                      </Link>
+
+                      <Link
+                        target="_blank"
+                        href={"https://stores.eyepadelivery.com/signup"}
+                      >
+                        <p className="cursor-pointer">Add your restaurant</p>
+                      </Link>
+
                       <p className="cursor-pointer">Sign up to deliver</p>
                     </div>
                   </>

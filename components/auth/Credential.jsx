@@ -1,33 +1,63 @@
 import React, { useState } from "react";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../../functions/fb";
-import { sendDoc } from "../../functions/call";
+import { PROXY, sendDoc } from "../../functions/call";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useAuthContext } from "../../context/Authentication";
 
 export default function Credential({ next }) {
+  const { setAuth } = useAuthContext();
+
+  const router = useRouter();
   const provider = new GoogleAuthProvider();
   const [email, setEmail] = useState("");
   const withGoogle = () => {
     signInWithPopup(auth, provider)
-      .then((result) => {
+      .then(async (result) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         const user = result.user.providerData;
         const { displayName, email, photoURL, uid } = user[0];
 
         // store user data somewhere in the user collection.
-        sendDoc({
-          path: "/user/",
-          data: {
-            name: displayName,
-            photo: photoURL,
-            email,
-            firebaseID:uid,
-          },
-          feedback: () => {},
-        }).then(() => {
-          localStorage.setItem()
-          next();
-        });
+        // find if user exist with email and set login auth to true.
+        try {
+          const { data } = await axios.get(`${PROXY}/user/find-user/${uid}`);
+          if (data) {
+            // user already exists... just save the important info to localStorage and go to feeds.
+            localStorage.setItem("userID", data?._id);
+            setAuth((prev) => ({
+              isAuthenticated: true,
+              userInfo: { ...user[0] },
+            }));
+            localStorage.setItem("mailID", email);
+            router.push("/feeds");
+          } else {
+            // save new user data...
+            sendDoc({
+              path: "/user/",
+              data: {
+                name: displayName,
+                photo: photoURL,
+                email,
+                firebaseID: uid,
+              },
+              feedback: () => {},
+            }).then(() => {
+              localStorage.setItem("userID", data?.uid);
+              localStorage.getItem("userAuth", true);
+              localStorage.setItem("mailID", email);
+              setAuth((prev) => ({
+                isAuthenticated: true,
+                userInfo: { ...user[0] },
+              }));
+              router.push("/feeds");
+            });
+          }
+        } catch (err) {
+          console.log("Hell occured");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -36,7 +66,7 @@ export default function Credential({ next }) {
   return (
     <div className="flex  flex-col px-5 pt-10 md:w-1/4 space-y-4 text-sm md:p-5">
       <h3 className="text-2xl text-gray-600 font-medium leading-relaxed">
-      What's your email ?
+        What's your email ?
       </h3>
 
       <div className="w-full bg-gray-100 p-4 flex rounded-lg">
@@ -75,7 +105,6 @@ export default function Credential({ next }) {
           <img className="w-12 h-8 " src="/assets/apple.jpg" />
           <p className="text-gray-700 font-medium">Continue with Apple</p>
         </button>
-
       </div>
 
       <p className="text-gray-500 text-xs leading-relaxed text-center">
