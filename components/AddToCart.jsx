@@ -92,10 +92,10 @@ export default function AddToCart({ close, item }) {
     if (status === 200) {
       alert("Successfully Added to cart");
       // continue be closing modal
-      close()
+      close();
     }
 
-    setLoading(false)
+    setLoading(false);
 
     // console.log(orderDetails);
   };
@@ -205,7 +205,9 @@ export default function AddToCart({ close, item }) {
                 className="bg-black text-white font-medium flex-1 p-4 rounded-md"
               >
                 {(loading && <Spin />) ||
-                  `Add ${quantity} to cart (${parseFloat(totalPrice + item?.price).toFixed(2)})`}
+                  `Add ${quantity} to cart (${parseFloat(
+                    totalPrice + item?.price
+                  ).toFixed(2)})`}
               </button>
               <button
                 onClick={close}

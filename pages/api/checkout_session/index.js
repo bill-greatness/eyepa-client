@@ -6,7 +6,7 @@ const stripe = new Stripe(process.env.NEXT_SECRETE_STRIPE_KEY);
 export default async function handler(req, res) {
     if (req.method === 'POST') {
         try {
-            const { cart } = req.body;
+            const { cart, email } = req.body;
 
             const lineItems = cart.map(item => {
                 return {
@@ -23,7 +23,7 @@ export default async function handler(req, res) {
 
             const session = await stripe.checkout.sessions.create({
                 payment_method_types: ['card'],
-                customer_email: "test@eyepa.com",
+                customer_email: email,
                 line_items: lineItems,
                 mode: 'payment',
                 

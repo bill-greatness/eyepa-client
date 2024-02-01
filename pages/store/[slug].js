@@ -95,7 +95,6 @@ const comments = [
 
 export default function Page() {
   const router = useRouter();
-
   const [openSimilar, setOpenSimilar] = useState(false);
   const [store, setStore] = useState({});
   const [foods, setFoods] = useState([]);

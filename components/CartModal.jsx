@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { HiLocationMarker, HiShoppingCart, HiX } from "react-icons/hi";
 import { useCartContext } from "../context/Cart";
 import getStripe from "../pages/utils/get-stripe";
-import { getDocs, getDoc } from "../functions/call";
+import { getDocs, getDoc, sendDoc } from "../functions/call";
 
 export default function CartModal({ close, info, location }) {
   // const { cart } = useCartContext()
@@ -70,7 +70,7 @@ export default function CartModal({ close, info, location }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ cart }),
+        body: JSON.stringify({ cart, email: info.email }),
       });
 
       const session = await response.json();
@@ -78,6 +78,13 @@ export default function CartModal({ close, info, location }) {
       if (response.ok) {
         const stripe = await getStripe();
         stripe.redirectToCheckout({ sessionId: session.id });
+
+        //save the order details. and remove item from cart.
+        await sendDoc({
+          path: "/order",
+          data: cartx,
+          feedback: () => alert("Order has been placed."),
+        });
       } else {
         console.error(session.message); // Handle errors here
         setIsLoading(false);
