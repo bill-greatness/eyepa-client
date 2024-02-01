@@ -31,6 +31,8 @@ export default async function handler(req, res) {
                 cancel_url: `${req.headers.origin}/feeds?payment_error={CHECKOUT_SESSION_ID}`,
             });
 
+
+
             res.status(200).json({ id: session.id });
         } catch (error) {
             res.status(500).json({ statusCode: 500, message: error.message });

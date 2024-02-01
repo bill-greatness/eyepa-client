@@ -8,30 +8,50 @@ import {
 } from "react-icons/io5";
 import { PiBowlFoodDuotone } from "react-icons/pi";
 import { FaBars } from "react-icons/fa6";
+import { LuShoppingCart } from "react-icons/lu";
 import { useRouter } from "next/router";
 import { HiUserCircle, HiX } from "react-icons/hi";
 import Head from "next/head";
 import Script from "next/script";
 import { useAuthContext } from "../context/Authentication";
-import { getWithHeaders } from "../functions/call";
+import { getWithHeaders, getDocs } from "../functions/call";
 import Link from "next/link";
+import CartModal from "./CartModal";
 
 export default function Header({ title, description }) {
   const router = useRouter();
-
+  const [user, setUser] = useState(null);
   const [showMenue, setShowMenue] = useState(false);
   const [notes, setNotes] = useState([]);
 
   const [showInfoModal, setShowInfoModal] = useState(false);
+  const [showChartModal, setShowChartModal] = useState(false);
 
   const [showNotifications, setShowNotifications] = useState(false);
 
   const { auth, setAuth } = useAuthContext();
+  const [location, setLocation] = useState({});
 
   useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((info) => {
+        const { latitude, longitude } = info?.coords;
+        setLocation((prev) => ({
+          coordinates: [latitude, longitude],
+          fullAddress: localStorage.getItem("address"),
+          country: localStorage.getItem("country"),
+        }));
+      });
+    }
+
     getWithHeaders({
       path: `/user/alerts/${auth.userInfo?.uid || auth.userInfo?._id}`,
       getter: setNotes,
+    });
+
+    getDocs({
+      path: `/user/${localStorage.getItem("userID")}`,
+      getter: setUser,
     });
   }, [auth]);
 
@@ -56,17 +76,19 @@ export default function Header({ title, description }) {
           />
         </div>
         <div className="flex items-center space-x-10 text-gray-500">
-          <button className="items-center space-x-3 hidden md:flex">
-            <div className="flex items-center space-x-2">
-              <img
-                alt="flag_image"
-                className="h-4"
-                src="https://hatscripts.github.io/circle-flags/flags/gh.svg"
-              />
-              <p className="text-gray-500">Ghana</p>
-            </div>
-            <IoTriangleSharp size={10} color="gray" className="rotate-180" />
-          </button>
+          {auth.isAuthenticated && (
+            <button
+              onClick={() => setShowChartModal(true)}
+              className=" text-gray-400 p-3 rounded-md relative flex space-x-2"
+            >
+              <LuShoppingCart size={20} />
+              <p>Cart</p>
+              <div className="text-xs text-white bg-yellow-500 absolute -top-3 rounded-full border h-5 w-5 right-0">
+                {user?.cart?.length}
+              </div>
+            </button>
+          )}
+
           {auth.isAuthenticated && (
             <button
               onClick={() => setShowNotifications(true)}
@@ -310,6 +332,14 @@ export default function Header({ title, description }) {
             </div>
           </div>
         </div>
+      )}
+
+      {showChartModal && (
+        <CartModal
+          close={() => setShowChartModal(false)}
+          info={user}
+          location={location}
+        />
       )}
     </header>
   );

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { HiLocationMarker, HiShoppingCart, HiX } from "react-icons/hi";
-import { LuSearch, LuShoppingCart } from "react-icons/lu";
-import CartModal from "./CartModal";
+import { HiLocationMarker} from "react-icons/hi";
+// HiShoppingCart, HiX, LuShoppingCart
+import { LuSearch,  } from "react-icons/lu";
 import ChangeLocationModal from "./ChangeLocationModal";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import { useRouter } from "next/router";
 
 export default function SearchComponent({ user }) {
   const router = useRouter();
-  const [showChartModal, setShowChartModal] = useState(false);
+  // const [showChartModal, setShowChartModal] = useState(false);
   const [showChangeLocationModal, setShowChangeLocationModal] = useState(false);
   const [location, setLocation] = useState({});
 
@@ -23,7 +23,7 @@ export default function SearchComponent({ user }) {
         }));
       });
     }
-  }, [user]);
+  }, []);
 
   const setAddress = (address) => {
     geocodeByAddress(address)
@@ -63,7 +63,7 @@ export default function SearchComponent({ user }) {
             </div>
           </div>
           <div className="w-1/4 p-5 md:hidden">
-            <button
+            {/* <button
               onClick={() => setShowChartModal(true)}
               className=" text-gray-400 p-3 rounded-md relative flex space-x-2"
             >
@@ -72,7 +72,7 @@ export default function SearchComponent({ user }) {
               <div className="text-xs text-white bg-yellow-500 absolute -top-3 rounded-full border h-5 w-5 right-0">
                 {user.cart?.length}
               </div>
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -91,7 +91,9 @@ export default function SearchComponent({ user }) {
             placeholder="Search Food and Restaurants"
           />
         </div>
-        <div className="w-1/4 p-5 hidden md:flex">
+
+        {/* <div className="w-1/4 p-5 hidden md:flex"> 
+        Find something and place here...
           <button
             onClick={() => setShowChartModal(true)}
             className="bg-black text-white p-3 rounded-md relative flex space-x-2"
@@ -102,7 +104,7 @@ export default function SearchComponent({ user }) {
               {user.cart?.length}
             </div>
           </button>
-        </div>
+        </div> */}
 
         {showChangeLocationModal && (
           <ChangeLocationModal
@@ -111,13 +113,6 @@ export default function SearchComponent({ user }) {
           />
         )}
 
-        {showChartModal && (
-          <CartModal
-            close={() => setShowChartModal(false)}
-            info={user}
-            location={location}
-          />
-        )}
       </div>
     </div>
   );

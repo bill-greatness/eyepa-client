@@ -41,7 +41,7 @@ export default function CartModal({ close, info, location }) {
   const getDeliveryCharge = async (storeID) => {
     try {
       const { data } = await getDoc({
-        path: `/order/get-delivery-charge/${storeID}/${location.coordinates[0]}/${location.coordinates[1]}`,
+        path: `/order/get-delivery-charge/${storeID}/${location?.coordinates[0]}/${location?.coordinates[1]}`,
       });
       setShow(true);
       console.log(data);
@@ -64,6 +64,15 @@ export default function CartModal({ close, info, location }) {
       });
     }
 
+     const orderData = {
+      ...cartx, 
+      deliveryTo:{
+        fullAddress:localStorage.getItem("address"),
+        coordinates:location?.coordinates,
+      }, 
+      status:"Open",
+      country: localStorage.getItem("country")
+     }
     try {
       const response = await fetch("/api/checkout_session", {
         method: "POST",
@@ -76,15 +85,19 @@ export default function CartModal({ close, info, location }) {
       const session = await response.json();
 
       if (response.ok) {
-        const stripe = await getStripe();
-        stripe.redirectToCheckout({ sessionId: session.id });
-
-        //save the order details. and remove item from cart.
+        console.log({newResponse: response})
+        
         await sendDoc({
           path: "/order",
-          data: cartx,
+          data: orderData,
           feedback: () => alert("Order has been placed."),
         });
+
+        const stripe = await getStripe();
+        //save the order details. and remove item from cart.
+
+
+        stripe.redirectToCheckout({ sessionId: session.id });
       } else {
         console.error(session.message); // Handle errors here
         setIsLoading(false);
@@ -198,7 +211,7 @@ export default function CartModal({ close, info, location }) {
                               <tr className="text-sm">
                                 <td className="p-2">Delivery Fees</td>
                                 <td
-                                  className="p-2"
+                                  className="p-2 cursor-pointer"
                                   onClick={() =>
                                     getDeliveryCharge(product?.storeID)
                                   }
