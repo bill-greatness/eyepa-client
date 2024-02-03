@@ -9,7 +9,7 @@ import CompletePlaces from "react-places-autocomplete";
 
 export default function Landing() {
   const router = useRouter();
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState(localStorage.getItem("address"));
   return (
     <div className="w-screen h-screen overflow-y-auto overflow-hidden bg-gray-50">
 

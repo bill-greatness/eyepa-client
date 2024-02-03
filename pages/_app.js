@@ -15,10 +15,9 @@ function MyApp({ Component, pageProps }) {
   return <>
     <AuthContextProvider>
       <CartContextProvider>
-
         <LocationContextProvider>
           <Script
-            src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyA-a5Toku6TZnzEUwSSWHHkvGSkpMvwrMo&libraries=places`}
+            src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyA-a5Toku6TZnzEUwSSWHHkvGSkpMvwrMo&libraries=places&loading=async`}
             onLoad={() => setGoogleApiLoaded(true)}
           />
           {googleApiLoaded ? <Component {...pageProps} /> : <div className="flex h-screen w-screen  flex-col items-center justify-center">

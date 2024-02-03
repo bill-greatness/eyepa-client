@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { HiLocationMarker, HiShoppingCart, HiX } from "react-icons/hi";
-import { useCartContext } from "../context/Cart";
 import getStripe from "../pages/utils/get-stripe";
-import { getDocs, getDoc, sendDoc } from "../functions/call";
-
+import { getDocs, getDoc, sendDoc, deleteDoc } from "../functions/call";
+import _ from "lodash";
 export default function CartModal({ close, info, location }) {
   // const { cart } = useCartContext()
-
   const [serviceCharge, setServiceCharge] = useState({});
+  const [totalPrice, setTotalPrice] = useState(0.0);
 
   const [show, setShow] = useState(false);
   const [charges, setCharges] = useState({});
@@ -38,14 +37,17 @@ export default function CartModal({ close, info, location }) {
     });
   }}*/
 
-  const getDeliveryCharge = async (storeID) => {
+  const getDeliveryCharge = async (product) => {
     try {
       const { data } = await getDoc({
-        path: `/order/get-delivery-charge/${storeID}/${location?.coordinates[0]}/${location?.coordinates[1]}`,
+        path: `/order/get-delivery-charge/${product?.storeID}/${location?.coordinates[0]}/${location?.coordinates[1]}`,
       });
-      setShow(true);
-      console.log(data);
+      const total = getTotal(product);
       setCharges(data);
+      setTotalPrice(
+        Number(parseFloat(total) + parseFloat(data?.charge)).toFixed(2)
+      );
+      setShow(true);
     } catch (err) {
       console.log(err);
     }
@@ -60,19 +62,32 @@ export default function CartModal({ close, info, location }) {
       cart.push({
         name: c.name,
         quantity: cartx.quantity,
-        price: getTotal(cartx),
+        price: totalPrice,
       });
     }
 
-     const orderData = {
-      ...cartx, 
-      deliveryTo:{
-        fullAddress:localStorage.getItem("address"),
-        coordinates:location?.coordinates,
-      }, 
-      status:"Open",
-      country: localStorage.getItem("country")
-     }
+    const realPrice = _.sumBy(cartx.items, (itm) => itm.price) * cartx.quantity;
+    // get addons.
+    let addonPrices = 0;
+    for (var ad of cartx.items) {
+      addonPrices = _.sumBy(ad.addons, (ax) => ax.price);
+    }
+
+    const storePrice = realPrice + addonPrices;
+    const orderData = {
+      ...cartx,
+      deliveryTo: {
+        fullAddress: localStorage.getItem("address"),
+        coordinates: location?.coordinates,
+      },
+      status: "Open",
+      country: localStorage.getItem("country"),
+      paymentMethod: "Stripe",
+      totalPrice: parseFloat(totalPrice),
+      storePrice: parseFloat(storePrice),
+    };
+
+
     try {
       const response = await fetch("/api/checkout_session", {
         method: "POST",
@@ -85,17 +100,23 @@ export default function CartModal({ close, info, location }) {
       const session = await response.json();
 
       if (response.ok) {
-        console.log({newResponse: response})
-        
-        await sendDoc({
-          path: "/order",
-          data: orderData,
-          feedback: () => alert("Order has been placed."),
-        });
+        console.log({ newResponse: response });
 
         const stripe = await getStripe();
         //save the order details. and remove item from cart.
 
+        await sendDoc({
+          path: "/order",
+          data: {
+            ...orderData,
+            transactionID: session.id,
+            serviceCharge: serviceCharge?.charge,
+          },
+          feedback: () => alert("Order has been placed."),
+        });
+
+
+        await remove(cartx.favID)
 
         stripe.redirectToCheckout({ sessionId: session.id });
       } else {
@@ -117,12 +138,23 @@ export default function CartModal({ close, info, location }) {
       addonPrices = _.sumBy(ad.addons, (ax) => ax.price);
     }
 
-    return parseFloat(
+    const returning =
       parseFloat(serviceCharge.charge) +
-        parseFloat(charges?.charge) +
-        parseFloat(realPrice) +
-        addonPrices
-    ).toFixed(2);
+      parseFloat(realPrice) +
+      parseInt(addonPrices);
+
+    return parseFloat(returning).toFixed(2);
+  };
+
+  const remove = async (id) => {
+    try {
+      const { status } = await deleteDoc({
+        path: `/user/remove-item/${id}?type=cart`,
+      });
+      console.log(status);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -136,7 +168,7 @@ export default function CartModal({ close, info, location }) {
           onClick={(e) => {
             e.stopPropagation();
           }}
-          className="absolute flex flex-col w-svw md:w-2/6 bottom-0 md:bottom-auto md:min-h-[60vh] overflow-y-auto bg-white border border-gray-100 rounded-md right-0 top-48 z-10 p-5"
+          className="absolute flex flex-col w-svw md:w-2/6 bottom-0 md:bottom-auto md:min-h-[60vh] overflow-y-auto bg-white border border-gray-100 rounded-md right-0 top-20 z-10 p-5"
         >
           <button
             onClick={() => close()}
@@ -209,15 +241,17 @@ export default function CartModal({ close, info, location }) {
                             </tbody>
                             <tfoot>
                               <tr className="text-sm">
-                                <td className="p-2">Delivery Fees</td>
-                                <td
+                                <td className="p-2" colSpan={2}>
+                                  Delivery Fees
+                                </td>
+                                {/* <td
                                   className="p-2 cursor-pointer"
                                   onClick={() =>
                                     getDeliveryCharge(product?.storeID)
                                   }
                                 >
                                   Show
-                                </td>
+                                </td> */}
                                 <td className="p-2 flex items-center gap-3">
                                   <p>{show && charges?.charge}</p>
                                 </td>
@@ -230,16 +264,33 @@ export default function CartModal({ close, info, location }) {
                           <p>Service Fees :</p>
                           <p>${serviceCharge?.charge}</p>
                         </div>
-                        <button
-                          disabled={isLoading}
-                          onClick={() => {
-                            //   setCart(product);
-                            handleSubmit(product);
-                          }}
-                          className="bg-black p-3 rounded text-white font-medium"
-                        >
-                          Checkout ${getTotal(product)}
-                        </button>
+                        <div className="flex items-center gap-2">
+                          {!show ? (
+                            <button
+                              onClick={() => {
+                                getDeliveryCharge(product);
+                              }}
+                              className="bg-black p-3 rounded text-white font-medium flex-1"
+                            >
+                              View Cost
+                            </button>
+                          ) : (
+                            <button
+                              disabled={isLoading}
+                              onClick={() => handleSubmit(product)}
+                              className="bg-black p-3 rounded text-white font-medium flex-1"
+                            >
+                              Checkout ${totalPrice}
+                            </button>
+                          )}
+
+                          <button
+                            onClick={() => remove(product.favID)}
+                            className="bg-red-600 p-3 rounded text-white font-medium"
+                          >
+                            Remove
+                          </button>
+                        </div>
 
                         {/* <p className="text-sm font-light">${product?.price}</p> */}
                       </div>

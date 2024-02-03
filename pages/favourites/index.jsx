@@ -11,43 +11,6 @@ import FoodInfo from "../../components/FoodInfo";
 import { getWithHeaders } from "../../functions/call";
 import { useAuthContext } from "../../context/Authentication";
 
-const stores = [
-  {
-    name: "Strictly Angwamo Oil Rice",
-    estimatedTime: [20, 40],
-    rating: 4.5,
-    banner:
-      "https://images.bolt.eu/store/2022/2022-05-26/f0470c17-449f-4ed2-9461-b554135380ab.jpeg",
-  },
-  {
-    name: "Licking Waakye",
-    estimatedTime: [20, 40],
-    rating: 4.5,
-    banner:
-      "https://images.bolt.eu/store/2023/2023-10-21/a8620a49-6364-458e-8cb2-73c487a4b45f.jpeg",
-  },
-  {
-    name: "Kenkey Boutique",
-    estimatedTime: [20, 40],
-    rating: 4.5,
-    banner:
-      "https://images.bolt.eu/store/2021/2021-11-25/d91b649e-616a-42c0-a5c4-db67433e7004.jpeg",
-  },
-  {
-    name: "Sushi Koyoto",
-    estimatedTime: [20, 40],
-    rating: 4.5,
-    banner:
-      "https://images.bolt.eu/store/2023/2023-05-25/68f3e944-6b6b-4be5-b39f-3704ba7825e7.jpeg",
-  },
-  {
-    name: "Dunkins",
-    estimatedTime: [20, 40],
-    rating: 4.5,
-    banner:
-      "https://images.bolt.eu/store/2020/2020-12-09/3f0a90f7-fa5c-4d1e-8e01-f1de04003c24.jpeg",
-  },
-];
 
 export default function Favorites() {
   const [openAddToCart, setOpenAddToCart] = useState(false);
@@ -66,7 +29,7 @@ export default function Favorites() {
     });
   }, [auth]);
 
-  // console.log(user.favorites);
+  console.log(user?.favorites);
 
   const getGrouped = () => {
     const grouped = _.groupBy(user?.favorites || [], (us) => us.type);

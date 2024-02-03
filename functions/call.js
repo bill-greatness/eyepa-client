@@ -23,6 +23,12 @@ export const getDoc = async ({ path }) => {
   });
 };
 
+export const deleteDoc = async ({ path }) => {
+  return axios.delete(`${PROXY + path}`, {
+    headers: { userid: localStorage.getItem("userID") },
+  });
+};
+
 export const getWithHeaders = async ({ path, getter }) => {
   const { data } = await axios.get(`${PROXY + path}`, {
     headers: {

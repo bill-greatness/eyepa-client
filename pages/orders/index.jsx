@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { HiCalendar } from "react-icons/hi";
@@ -6,6 +6,8 @@ import { LuSearch, LuVegan } from "react-icons/lu";
 import { IoTriangleSharp } from "react-icons/io5";
 import { HiCheckCircle, HiXCircle } from "react-icons/hi2";
 import { useRouter } from "next/router";
+import { getDocs } from "../../functions/call";
+import moment from "moment";
 
 const dateFilters = ["This month", "This Quater", "This year", "All time"];
 
@@ -13,7 +15,16 @@ export default function Orders() {
   const [showDateSortModal, setShowDateSortModal] = useState(false);
   const [dateFilter, setDateFilter] = useState(dateFilters[0]);
 
+  const [orders, setOrders] = useState([]);
   const router = useRouter();
+
+  useEffect(() => {
+    getDocs({
+      path: `/user/history/${localStorage.getItem("userID")}`,
+      getter: setOrders,
+    });
+  }, []);
+  
   return (
     <div className="w-screen h-screen flex flex-col overflow-hidden overflow-y-auto">
       <Header
@@ -55,94 +66,53 @@ export default function Orders() {
         <div className="flex flex-col space-y-8 px-5 md:px-0">
           <h3 className="text-2xl">Active Orders</h3>
 
-          <div className="bg-gray-100/70 min-h-40 rounded-lg flex flex-col space-y-2 items-center justify-center">
-            <LuVegan size={30} color="gray" />
-            <p className="text-gray-500 text-sm">
-              You currently have no running orders
-            </p>
-          </div>
+          {orders?.length < 1 && (
+            <div className="bg-gray-100/70 min-h-40 rounded-lg flex flex-col space-y-2 items-center justify-center">
+              <LuVegan size={30} color="gray" />
+              <p className="text-gray-500 text-sm">
+                You currently have no running orders
+              </p>
+            </div>
+          )}
 
-          <div className="grid grid-cols-1 md:grid-cols-3 md:gap-4">
-            <div
-              onClick={() => router.push("/orders/4")}
-              className=" cursor-pointer"
-            >
-              <div className="md:min-h-40 border-b md:border md:rounded-lg  flex items-center overflow-hidden">
-                <div className="flex-1 h-full p-5 flex flex-col space-y-2 overflow-hidden">
-                  <h3 className="leading-loose text-sm md:text-lg">
-                    Order A89834GW90
-                  </h3>
-                  <p className="text-sm font-light">$13.85</p>
-                  <p className="text-sm font-light text-gray-400 ">
-                    Chick-fil-A Chick-n-Mini x 2 & Chick-fil-A Chick-n-Max x 5 &
-                    Banku with Fried Fish
-                  </p>
-                  <div className="flex items-center space-x-2">
-                    <p className="text-xs bg-yellow-300 w-fit text-yellow-900 px-3 py-1 rounded-full">
-                      Yesterday
-                    </p>
-                    <p className="text-xs bg-gray-300 w-fit text-gray-900 px-3 py-1 rounded-full">
-                      In progress
-                    </p>
+          {orders?.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-3 md:gap-4">
+              {orders?.map((ord, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => router.push(`/orders/${ord._id}`)}
+                  className=" cursor-pointer"
+                >
+                  <div className="md:min-h-40 border-b md:border md:rounded-lg  flex items-center overflow-hidden">
+                    <div className="flex-1 h-full p-5 flex flex-col space-y-2 overflow-hidden">
+                      <h3 className="leading-loose text-sm md:text-lg">
+                        Order #{ord.id}
+                      </h3>
+                      <p className="text-sm font-light">${ord.totalPrice}</p>
+                      <div className="text-sm text-gray-400 ">
+                        <p className="text-semibold text-md"> {ord?.items[0].name}</p>
+                        <p className="text-sm font-light">
+                          {ord?.items[0].description}
+                        </p>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <p className="text-xs bg-yellow-300 w-fit text-yellow-900 px-3 py-1 rounded-full">
+                          {moment(ord.createdAt).from()}
+                        </p>
+                        <p className="text-xs bg-gray-300 w-fit text-gray-900 px-3 py-1 rounded-full">
+                          {ord.status}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
-            <div
-              onClick={() => router.push("/orders/4")}
-              className=" cursor-pointer"
-            >
-              <div className="md:min-h-40  border-b md:border md:rounded-lg   flex items-center overflow-hidden">
-                <div className="flex-1 h-full p-5 flex flex-col space-y-2 overflow-hidden">
-                  <h3 className="leading-loose text-sm md:text-lg">
-                    Order A89834GW90
-                  </h3>
-                  <p className="text-sm font-light">$13.85</p>
-                  <p className="text-sm font-light text-gray-400 ">
-                    Chick-fil-A Chick-n-Mini x 2 & Chick-fil-A Chick-n-Max x 5 &
-                    Banku with Fried Fish
-                  </p>
-                  <div className="flex items-center space-x-2">
-                    <p className="text-xs bg-yellow-300 w-fit text-yellow-900 px-3 py-1 rounded-full">
-                      Yesterday
-                    </p>
-                    <p className="text-xs bg-gray-300 w-fit text-gray-900 px-3 py-1 rounded-full">
-                      In progress
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              onClick={() => router.push("/orders/4")}
-              className=" cursor-pointer"
-            >
-              <div className="md:min-h-40  border-b md:border md:rounded-lg   flex items-center overflow-hidden">
-                <div className="flex-1 h-full p-5 flex flex-col space-y-2 overflow-hidden">
-                  <h3 className="leading-loose text-sm md:text-lg">
-                    Order A89834GW90
-                  </h3>
-                  <p className="text-sm font-light">$13.85</p>
-                  <p className="text-sm font-light text-gray-400 ">
-                    Chick-fil-A Chick-n-Mini x 2 & Chick-fil-A Chick-n-Max x 5 &
-                    Banku with Fried Fish
-                  </p>
-                  <div className="flex items-center space-x-2">
-                    <p className="text-xs bg-yellow-300 w-fit text-yellow-900 px-3 py-1 rounded-full">
-                      Yesterday
-                    </p>
-                    <p className="text-xs bg-gray-300 w-fit text-gray-900 px-3 py-1 rounded-full">
-                      In progress
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </div>
 
-      <div className="flex items-start md:space-x-3 container mx-auto py-10">
+      {/*<div className="flex items-start md:space-x-3 container mx-auto py-10">
         <div className="w-full md:w-full flex-col space-y-16">
           <div className="flex flex-col space-y-8 px-5 md:px-0">
             <h3 className="text-2xl">This month's orders</h3>
@@ -226,7 +196,7 @@ export default function Orders() {
             </div>
           </div>
         </div>
-      </div>
+      </div>*/}
 
       {showDateSortModal && (
         <div

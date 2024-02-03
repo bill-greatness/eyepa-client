@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+
 import {
   IoLogoAndroid,
   IoLogoAppleAppstore,
-  IoTriangleSharp,
   IoNotificationsSharp,
 } from "react-icons/io5";
 import { PiBowlFoodDuotone } from "react-icons/pi";
@@ -12,15 +12,18 @@ import { LuShoppingCart } from "react-icons/lu";
 import { useRouter } from "next/router";
 import { HiUserCircle, HiX } from "react-icons/hi";
 import Head from "next/head";
-import Script from "next/script";
+// import Script from "next/script";
 import { useAuthContext } from "../context/Authentication";
 import { getWithHeaders, getDocs } from "../functions/call";
 import Link from "next/link";
 import CartModal from "./CartModal";
+import moment from "moment";
 
 export default function Header({ title, description }) {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("userInfo"))
+  );
   const [showMenue, setShowMenue] = useState(false);
   const [notes, setNotes] = useState([]);
 
@@ -45,7 +48,9 @@ export default function Header({ title, description }) {
     }
 
     getWithHeaders({
-      path: `/user/alerts/${auth.userInfo?.uid || auth.userInfo?._id}`,
+      path: `/user/alerts/${
+        localStorage.getItem("userID") || auth.userInfo?._id
+      }`,
       getter: setNotes,
     });
 
@@ -59,7 +64,7 @@ export default function Header({ title, description }) {
 
   return (
     <header className="py-3 sticky top-0 z-10 backdrop-blur-sm">
-      <Script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-a5Toku6TZnzEUwSSWHHkvGSkpMvwrMo&libraries=places&loading=async"></Script>
+      {/* <Script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-a5Toku6TZnzEUwSSWHHkvGSkpMvwrMo&libraries=places"></Script> */}
       <Head>
         <title>{title}</title>
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
@@ -83,17 +88,24 @@ export default function Header({ title, description }) {
             >
               <LuShoppingCart size={20} />
               <p>Cart</p>
-              <div className="text-xs text-white bg-yellow-500 absolute -top-3 rounded-full border h-5 w-5 right-0">
-                {user?.cart?.length}
-              </div>
+              {user?.cart?.length > 0 && (
+                <div className="text-xs text-white bg-yellow-500 absolute -top-3 rounded-full border h-5 w-5 right-0">
+                  {user?.cart?.length}
+                </div>
+              )}
             </button>
           )}
 
           {auth.isAuthenticated && (
             <button
               onClick={() => setShowNotifications(true)}
-              className="bg-gray-100 p-2 rounded-full flex"
+              className="bg-gray-100 p-2 rounded-full flex relative"
             >
+              {notes?.length > 0 && (
+                <div className="w-5 h-5 absolute -top-2 text-white flex items-center justify-center text-sm  -right-2 rounded-full bg-red-600">
+                  {notes?.length}
+                </div>
+              )}
               <IoNotificationsSharp size={20} />
             </button>
           )}
@@ -143,11 +155,11 @@ export default function Header({ title, description }) {
                   <HiX size={18} />
                 </button>
               </div>
-              <div className="flex flex-col flex-1 p-5 space-y-5">
+              <div className="flex flex-col p-5 space-y-5 h-[60vh] overflow-y-auto">
                 {notes?.map((info) => (
                   <div
                     key={info._id}
-                    onClick={() => router.push("/orders/4")}
+                    onClick={() => router.push(`/orders/${info.orderID}`)}
                     className=" cursor-pointer flex flex-row  space-x-3 border-b border-gray-100 pb-5"
                   >
                     <div className="h-10 shrink-0 w-10 flex items-center justify-center border rounded-full">
@@ -155,14 +167,13 @@ export default function Header({ title, description }) {
                     </div>
                     <div className="flex flex-col space-y-1">
                       <h3 className="text-sm font-medium text-gray-600">
-                        Order #778748
+                        Order #{info.type}
                       </h3>
                       <p className="text-sm font-light text-gray-600">
-                        Your order #778748 has been is beign prepared. and will
-                        be ready for pickup in 10 mins time.
+                        {info.message}
                       </p>
                       <p className="text-xs text-yellow-600 font-medium">
-                        Just now
+                        {moment(info.createdAt).from()}
                       </p>
                     </div>
                   </div>
@@ -232,9 +243,13 @@ export default function Header({ title, description }) {
                         <p className="font-medium text-lg">
                           {auth.userInfo?.displayName || auth.userInfo?.name}
                         </p>
-                        <p className="font-light text-xs hover:text-green-500">
-                          Customer Account
-                        </p>
+                        <Link
+                          href={`https://eyepadelivery.com/auth?referrer=${auth.userInfo?.refID}`}
+                          target="_blank"
+                          className="font-normal text-xs hover:text-green-500"
+                        >
+                          Share referal link
+                        </Link>
                       </div>
                     </div>
                     <p

@@ -35,7 +35,7 @@ export default function Foods() {
 
   useEffect(() => {
     if (router.query.payment_error) {
-      toast.error("🦄 Wow so easy!", {
+      toast.error("Something Went Wrong", {
         position: "top-right",
         autoClose: 5000,
         closeOnClick: true,
@@ -71,13 +71,6 @@ export default function Foods() {
     });
   }, []);
 
-  const filterFeeds = () => {
-    if (category === "All") {
-      return foods;
-    }
-
-    return foods.filter((fd) => fd.category === category);
-  };
 
   const addItem = (item) => {
     setItem(item);

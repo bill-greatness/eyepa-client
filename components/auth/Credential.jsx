@@ -31,6 +31,8 @@ export default function Credential({ next }) {
               isAuthenticated: true,
               userInfo: { ...user[0] },
             }));
+            localStorage.setItem("isAuthenticated", true);
+            localStorage.setItem("userInfo", JSON.stringify({ ...user[0], userID: data?._id }));
             localStorage.setItem("mailID", email);
             router.push("/feeds");
           } else {
@@ -46,8 +48,9 @@ export default function Credential({ next }) {
               feedback: () => {},
             }).then(() => {
               localStorage.setItem("userID", data?.uid);
-              localStorage.getItem("userAuth", true);
+              localStorage.setItem("isAuthenticated", true);
               localStorage.setItem("mailID", email);
+              localStorage.setItem("userInfo", JSON.stringify({ ...user[0] }));
               setAuth((prev) => ({
                 isAuthenticated: true,
                 userInfo: { ...user[0] },
