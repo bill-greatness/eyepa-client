@@ -1,7 +1,7 @@
 import React from 'react'
 import { loadStripe } from '@stripe/stripe-js';
 import {Elements} from '@stripe/react-stripe-js';
-import { CheckoutForm } from '../components/CheckoutForm'
+// import { CheckoutForm } from '../components/CheckoutForm'
 
 
 const options = {
@@ -21,7 +21,7 @@ const Checkout = () => {
   return (
     <div className='flex container mt-8'>
       <Elements stripe={stripePromise} options={options}>
-        <CheckoutForm />
+        <h3>Welcome to Check out...</h3>
       </Elements>
     </div>
   )
